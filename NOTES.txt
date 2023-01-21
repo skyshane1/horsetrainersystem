@@ -1,0 +1,63 @@
+ADMIN ACTIONS:
+
+Horse
+1. Add Horse
+2. Edit Horse
+3. Remove Horse
+4. Search Horse
+
+Behavior
+5. Add Behavior
+6. Edit Behavior
+7. Remove Behavior
+8. Search Behavior
+
+TrainER
+9. Add/Create Trainer 
+10. Edit Trainer
+11. Remove Trainer
+12. Search Trainer
+
+TrainING
+13. Assign Horse
+14. Unassign Horse
+15. Assign Behavior
+16. Unassign Behavior
+17. Add Training Notes
+18. Edit Training Notes
+19. Remove Training Notes
+20. Search Training Notes
+
+Personal
+18. Edit Profile
+
+TRAINER ACTIONS:
+
+Horse
+4. Search Horse
+
+Behavior
+8. Search Behavior
+
+TrainER
+12. Search Trainer
+
+TrainING
+17. Add Training Notes
+18. Edit Training Notes
+19. Remove Training Notes
+20. Search Training Notes
+
+Personal
+18. Edit Profile
+
+NEXT STEPS (In no particular order right now):
+* When users click "search horse", they should also be shown an option to select an individual horse
+    --> Hyperlinked name in table, or separate dropdown menu   
+    --> Leads to "horseProfile.php" page that displays all of the horse's information (info, trainers, behaviors, notes)
+
+* When users click "search trainer", they should also be shown an option to select an individual trainer
+    --> Hyperlinked name in table, or separate dropdown menu   
+    --> Leads to "trainerProfile.php" page that displays all of the trainer's information (info, horses)
+
+* Login (duh)
