@@ -25,9 +25,9 @@ session_cache_expire(30);
             <?PHP include('header.php'); ?>
             <div id="content">
                 <?PHP
-                include_once('../domain/Horse.php');
-                include_once('../database/dbinfo.php');
-                include_once('../database/horsedb.php');
+                include_once('domain/Horse.php');
+                include_once('database/dbinfo.php');
+                include_once('database/horsedb.php');
                 //include_once('database/dbPersons.php');
                 //include_once('domain/Person.php');
                 //include_once('database/dbLog.php');
