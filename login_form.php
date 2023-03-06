@@ -17,7 +17,7 @@
 
 <div id="content">
     <?PHP
-    include_once('database/dbPersons.php');
+    include_once('database/persondb.php');
     include_once('domain/Person.php');
     if (($_SERVER['PHP_SELF']) == "/logout.php") {
         //prevents infinite loop of logging in to the page which logs you out...
@@ -42,30 +42,26 @@
         if ($_POST['user'] == "guest" && $_POST['pass'] == "") {
             $_SESSION['logged_in'] = 1;
             $_SESSION['access_level'] = 0;
-            $_SESSION['venue'] = "";
-            $_SESSION['type'] = "";
             $_SESSION['_id'] = "guest";
             echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
         }
         //otherwise authenticate their password
         else {
             $db_pass = md5($_POST['pass']);
-            $db_id = $_POST['user'];
-            $person = retrieve_person($db_id);
+            $db_user = $_POST['user'];
+            $person = retrieve_person($db_user);
             if ($person) { //avoids null results
-                if ($person->get_password() == $db_pass) { //if the passwords match, login
+                if ($person->get_pass() == $db_pass) { //if the passwords match, login
                     $_SESSION['logged_in'] = 1;
                     date_default_timezone_set ("America/New_York");
-                    if ($person->get_status() == "applicant")
+                    if ($person->get_userType() == "applicant")
                         $_SESSION['access_level'] = 0;
-                    else if (in_array('manager', $person->get_type()))
+                    else if ($person->get_userType() == "manager")
                         $_SESSION['access_level'] = 2;
                     else
                         $_SESSION['access_level'] = 1;
-                    $_SESSION['f_name'] = $person->get_first_name();
-                    $_SESSION['l_name'] = $person->get_last_name();
-                    $_SESSION['venue'] = $person->get_venue();
-                    $_SESSION['type'] = $person->get_type();
+                    $_SESSION['f_name'] = $person->get_firstName();
+                    $_SESSION['l_name'] = $person->get_lastName();
                     $_SESSION['_id'] = $_POST['user'];
                     echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
                 }
@@ -95,7 +91,6 @@
         }
     }
     ?>
-    <?PHP include('footer.inc'); ?>
 </div>
 </div>
 </body>
