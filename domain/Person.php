@@ -17,7 +17,7 @@ class Person {
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-		$this->fullName = $fullName;
+        $this->fullName = $fullName;
         $this->phone = $phone;
         $this->email = $email;
 		$this->username = $username;
@@ -33,7 +33,7 @@ class Person {
         return $this->lastName;
     }
 
-	function get_fullName() {
+    function get_fullName() {
         return $this->fullName;
     }
 
