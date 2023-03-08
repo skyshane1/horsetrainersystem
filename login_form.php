@@ -48,11 +48,12 @@ session_start();
         }
         //otherwise authenticate their password
         else {
-            $db_pass = md5($_POST['pass']);
+            $db_pass = $_POST['pass'];
+            $hash = password_hash($db_pass, PASSWORD_DEFAULT);
             $db_user = $_POST['user'];
             $person = retrieve_person($db_user);
             if ($person) { //avoids null results
-                if ($person->get_pass() == $db_pass) { //if the passwords match, login
+                if (password_verify($db_pass, $person->get_pass())) { //if the passwords match, login
                     $_SESSION['logged_in'] = 1;
                     date_default_timezone_set ("America/New_York");
                     if ($person->get_userType() == "applicant")
