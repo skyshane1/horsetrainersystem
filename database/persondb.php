@@ -94,6 +94,14 @@ function edit_person($name, $person) {
     return true;
 }
 
+function edit_password($name, $hash) {
+    $con=connect();
+    $query = "UPDATE persondb SET pass ='".$hash."'  WHERE username ='" .$name."'";
+
+    $result = mysqli_query($con, $query);
+    mysqli_close($con);
+}
+
 
 /*
  * Function name: remove_person($personName)
