@@ -1,18 +1,54 @@
 <html>
 <style>
 table, tr, td{
-        border: 1px solid black;
+        border: 2px solid black;
         border-radius: 10px;
     }
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
 </style>    
 
-    <header>
-        <p>View Horses</p>
+    <header style='text-align:center'>
+        <h1>View Horses</h1>
     </header>
     <body>
-        <div>   
-            <table>
-                <tr>
+        <div class="split left">   
+            <div class="search-container">
+                <form>
+                    <input type="text" placeholder="Search." name="search">
+                    <button type="submit" style="background-color: white;"><i class="fa fa-search"><img style="width: 17px; height: 15px" src="https://i.stack.imgur.com/xXLCA.png"></i></button>
+                </form>
+            </div>
+            <table style='text-align:center'>
+                <tr> 
                     <th>Horse Name</th>
                     <th>Rank</th>
                     <th>Color</th>
@@ -48,6 +84,9 @@ table, tr, td{
                 }
                 ?>
             </table>
+        </div>
+        <div class="split right">
+            <p split>Viewing the behaviors and comments on horses here</p>
         </div>
     </body>
 </html>
