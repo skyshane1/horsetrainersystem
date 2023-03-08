@@ -6,7 +6,6 @@
  * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 session_start();
-session_cache_expire(30);
 ?>
 <html>
     <head>

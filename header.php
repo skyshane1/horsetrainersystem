@@ -7,6 +7,9 @@
  * (see <http://www.gnu.org/licenses/ for more information).
  * 
  */
+    if($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1){
+        header('Location: login_form.php');
+    }
 ?>
 <!-- Begin Header -->
 <style type="text/css">
