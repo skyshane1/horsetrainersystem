@@ -1,9 +1,41 @@
+<?php
+function searchBy($in){
+    $userSearch='\'%'.$in.'%\'';
+    $qry='select * from horseDB where horseName like '.$userSearch.'';
+    $qry='select * from horseDB order by horseName ASC';
+    return $qry;
+}
+function orderBy($in){
+    $userSearch='\'%'.$in.'%\'';
+    $qry='select * from horseDB where horseName order by DESC';
+    return $qry;
+}
+
+?>
+
+
 <html>
 <style>
 table, tr, td{
         border: 2px solid black;
         border-radius: 10px;
     }
+td:hover {
+    background-color: #900C3F;
+    color: #FFFFFF;
+}
+th:hover {
+	background-color: #581845;
+    color: #FFFFFF;
+}
+.trodd {
+    background-color:#71F8A6;
+    color: black;
+}
+.treven {
+    background-color:#25663E;
+    color: white;
+}
 .split {
   height: 100%;
   width: 50%;
@@ -35,7 +67,6 @@ table, tr, td{
 
 
 </style>    
-
     <header style='text-align:center'>
         <h1>View Horses</h1>
     </header>
@@ -47,9 +78,9 @@ table, tr, td{
                     <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
                 </form>
             </div>
-            <table style='text-align:center'>
+            <table class='sortable' style='text-align:center'>
                 <tr> 
-                    <th>Horse Name</th>
+                    <th><button onclick="orderBy(horseName)" style="background-color:white;color:black;">Horse Name</button></th>
                     <th>Rank</th>
                     <th>Color</th>
                     <th>Breed</th>
@@ -59,8 +90,7 @@ table, tr, td{
                 include_once('database/dbinfo.php');
                 $con=connect();
                 if ($_GET['search']!=NULL){
-                    $userSearch='\'%'.$_GET['search'].'%\'';
-                    $qry='select * from horseDB where horseName like '.$userSearch.'';
+                    $qry=searchBy($_GET['search']);
                 } else {
                     $qry='select * from horseDB order by pastureNum ASC';
                 }
@@ -73,9 +103,8 @@ table, tr, td{
                     $horseBreed=$row['breed'];
                     $horsePastureNum=$row['pastureNum'];
 
-                    //if (($indx % 2) == 1) {$rowClass = 'class="trOdd"'; } else { $rowClass = 'class="trEven"'; }
-                    echo '<tr>';
-                                //.$rowClass.^
+                    if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
+                    echo '<tr '.$rowClass.'>';
                     echo '<td>'.$horseName.'&nbsp;</td>'; 
                     echo '<td>'.$horseRank.'&nbsp;</td>';
                     echo '<td>'.$horseColor.'&nbsp;</td>';
