@@ -42,9 +42,9 @@ table, tr, td{
     <body>
         <div class="split left">   
             <div class="search-container">
-                <form>
+                <form method='get'>
                     <input type="text" placeholder="Search." name="search">
-                    <button type="submit" style="background-color: white;"><i class="fa fa-search"><img style="width: 17px; height: 15px" src="https://i.stack.imgur.com/xXLCA.png"></i></button>
+                    <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
                 </form>
             </div>
             <table style='text-align:center'>
@@ -58,7 +58,12 @@ table, tr, td{
                 <?php 
                 include_once('database/dbinfo.php');
                 $con=connect();
-                $qry='select * from horseDB';
+                if ($_GET['search']!=NULL){
+                    $userSearch='\'%'.$_GET['search'].'%\'';
+                    $qry='select * from horseDB where horseName like '.$userSearch.'';
+                } else {
+                    $qry='select * from horseDB order by pastureNum ASC';
+                }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
                 while($row=mysqli_fetch_array($fetched, MYSQLI_ASSOC)){
