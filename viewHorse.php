@@ -1,18 +1,23 @@
 <?php
+session_start();
 function searchBy($in){
     $userSearch='\'%'.$in.'%\'';
     $qry='select * from horseDB where horseName like '.$userSearch.'';
-    $qry='select * from horseDB order by horseName ASC';
     return $qry;
 }
 function orderBy($in){
-    $userSearch='\'%'.$in.'%\'';
-    $qry='select * from horseDB where horseName order by DESC';
-    return $qry;
-}
+    $userSearch=$in;
+    if ($_SESSION['prev']!=$in){
+        $order="ASC";
+        $_SESSION['prev']=$userSearch;
+    } else {
+        $order="DESC";
+        $_SESSION['prev']='';
+    }
+    $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
+    return $qry; }
 
 ?>
-
 
 <html>
 <style>
@@ -24,7 +29,12 @@ td:hover {
     background-color: #900C3F;
     color: #FFFFFF;
 }
-th:hover {
+button {    
+    background-color:white;
+    color:black; 
+    border:none;
+}
+.headerbutton:hover {
 	background-color: #581845;
     color: #FFFFFF;
 }
@@ -79,12 +89,14 @@ th:hover {
                 </form>
             </div>
             <table class='sortable' style='text-align:center'>
-                <tr> 
-                    <th><button onclick="orderBy(horseName)" style="background-color:white;color:black;">Horse Name</button></th>
-                    <th>Rank</th>
-                    <th>Color</th>
-                    <th>Breed</th>
-                    <th>Pasture Number</th>
+                <tr>
+                    <form method='get'>
+                    <th><button type='submit' class='headerbutton' name='order' value='horseName' ><b>Horse Name</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='colorRank' ><b>Rank</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='color' ><b>Color</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='breed' ><b>Breed</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='pastureNum' ><b>Pasture</b></button></th>
+                    </form> 
                 </tr>
                 <?php 
                 include_once('database/dbinfo.php');
@@ -93,6 +105,9 @@ th:hover {
                     $qry=searchBy($_GET['search']);
                 } else {
                     $qry='select * from horseDB order by pastureNum ASC';
+                }
+                if ($_GET['order']!=NULL){
+                    $qry=orderBy($_GET['order']);
                 }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
