@@ -1,9 +1,51 @@
+<?php
+session_start();
+function searchBy($in){
+    $userSearch='\'%'.$in.'%\'';
+    $qry='select * from horseDB where horseName like '.$userSearch.'';
+    return $qry;
+}
+function orderBy($in){
+    $userSearch=$in;
+    if ($_SESSION['prev']!=$in){
+        $order="ASC";
+        $_SESSION['prev']=$userSearch;
+    } else {
+        $order="DESC";
+        $_SESSION['prev']='';
+    }
+    $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
+    return $qry; }
+
+?>
+
 <html>
 <style>
 table, tr, td{
         border: 2px solid black;
         border-radius: 10px;
     }
+td:hover {
+    background-color: #900C3F;
+    color: #FFFFFF;
+}
+button {    
+    background-color:white;
+    color:black; 
+    border:none;
+}
+.headerbutton:hover {
+	background-color: #581845;
+    color: #FFFFFF;
+}
+.trodd {
+    background-color:#71F8A6;
+    color: black;
+}
+.treven {
+    background-color:#25663E;
+    color: white;
+}
 .split {
   height: 100%;
   width: 50%;
@@ -35,30 +77,38 @@ table, tr, td{
 
 
 </style>    
-
     <header style='text-align:center'>
         <h1>View Horses</h1>
     </header>
     <body>
         <div class="split left">   
             <div class="search-container">
-                <form>
+                <form method='get'>
                     <input type="text" placeholder="Search." name="search">
-                    <button type="submit" style="background-color: white;"><i class="fa fa-search"><img style="width: 17px; height: 15px" src="https://i.stack.imgur.com/xXLCA.png"></i></button>
+                    <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
                 </form>
             </div>
-            <table style='text-align:center'>
-                <tr> 
-                    <th>Horse Name</th>
-                    <th>Rank</th>
-                    <th>Color</th>
-                    <th>Breed</th>
-                    <th>Pasture Number</th>
+            <table class='sortable' style='text-align:center'>
+                <tr>
+                    <form method='get'>
+                    <th><button type='submit' class='headerbutton' name='order' value='horseName' ><b>Horse Name</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='colorRank' ><b>Rank</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='color' ><b>Color</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='breed' ><b>Breed</b></button></th>
+                    <th><button type='submit' class='headerbutton' name='order' value='pastureNum' ><b>Pasture</b></button></th>
+                    </form> 
                 </tr>
                 <?php 
                 include_once('database/dbinfo.php');
                 $con=connect();
-                $qry='select * from horseDB';
+                if ($_GET['search']!=NULL){
+                    $qry=searchBy($_GET['search']);
+                } else {
+                    $qry='select * from horseDB order by pastureNum ASC';
+                }
+                if ($_GET['order']!=NULL){
+                    $qry=orderBy($_GET['order']);
+                }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
                 while($row=mysqli_fetch_array($fetched, MYSQLI_ASSOC)){
@@ -68,9 +118,8 @@ table, tr, td{
                     $horseBreed=$row['breed'];
                     $horsePastureNum=$row['pastureNum'];
 
-                    //if (($indx % 2) == 1) {$rowClass = 'class="trOdd"'; } else { $rowClass = 'class="trEven"'; }
-                    echo '<tr>';
-                                //.$rowClass.^
+                    if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
+                    echo '<tr '.$rowClass.'>';
                     echo '<td>'.$horseName.'&nbsp;</td>'; 
                     echo '<td>'.$horseRank.'&nbsp;</td>';
                     echo '<td>'.$horseColor.'&nbsp;</td>';
