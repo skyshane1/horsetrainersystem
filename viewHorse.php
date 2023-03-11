@@ -48,7 +48,7 @@ button {
 }
 .split {
   height: 100%;
-  width: 50%;
+  width: 75%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -58,12 +58,12 @@ button {
 
 /* Control the left side */
 .left {
-  left: 0;
+  left: 25;
 }
 
 /* Control the right side */
 .right {
-  right: 0;
+  right: 35;
 }
 
 /* If you want the content centered horizontally and vertically */
@@ -135,7 +135,26 @@ button {
             </table>
         </div>
         <div class="split right">
-            <p split>Viewing the behaviors and comments on horses here</p>
+            <table style="width: 90%; height:70%">
+                <th style='width:20%; height:10%'>
+                    <p>notes</p>
+                </th>
+                <th style='height:10%'>
+                    <p>horsename via _session['curr_horse']</p>
+                </th>
+                <tr style='width:20%'>
+                    <div>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+         
+
+
+         
+
+            <p>Viewing the behaviors and comments on horses here</p>
         </div>
     </body>
 </html>
