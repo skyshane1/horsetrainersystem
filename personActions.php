@@ -217,10 +217,11 @@ function process_form($name, $person, $action) {
                         $newEmail = $_POST['email'];
 
                         //If newFirstName = "Owen" and newLastName = "Chong, then newUsername and newPass = "ochong".
-                        $newUsername = strtolower(substr($newFirstName, 0, 1)) . strtolower($newLastName);
-                        $newPass = strtolower(substr($newFirstName, 0, 1)) . strtolower($newLastName);
+                        $newUsername = $_POST['userName'];
+                        $newPass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                        //$newPass = $_POST['password'];
                         $newUserType = $_POST['userType'];
-                        $newPerson = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType);
+                        $newPerson = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType, $id);
 
                         $errors = validate_form($newPerson);
                         //errors array lists problems on the form submitted
@@ -281,7 +282,7 @@ function process_form($name, $person, $action) {
                     include('personValidate.inc'); 
                     
                     //so retrieve the form answers and validate it.
-                    $oldName = $_POST['oldName'];
+                    $id = $_POST['id'];
                     $newFirstName = $_POST['firstName'];
                     $newLastName = $_POST['lastName'];
 
@@ -293,7 +294,7 @@ function process_form($name, $person, $action) {
                     //This time, the user can directly edit the username and password. 
                         //Thus, duplicate usernames and passwords can happen very easily.
                     $newUsername = $_POST['username'];
-                    $newPass = $_POST['pass'];
+                    $newPass = password_hash($_POST['password'], PASSWORD_DEFAULT);
                     $newUserType = $_POST['userType'];
                     
                     //If the form has not been submitted (somehow, cuz this code shouldn't run),
@@ -305,7 +306,7 @@ function process_form($name, $person, $action) {
 
                     //Else, the form has been submitted,
                     else {
-
+/*
                         //so validate it. BTW, the parameter doesn't matter, because "validate_form" uses the form's $_POST values, NOT the parameter.
                         $errors = validate_form($person);
 
@@ -318,7 +319,7 @@ function process_form($name, $person, $action) {
                             show_errors($errors);
                             include('editPersonForm.inc');
                         }
-                                
+
                         //Else, if the user changed the name of a person to a name that already exists,
                             //Conditions: (1) The person must exist, and (2) the user wants to change the name of the existing person.
                             //If the user left the name the same, then the existing person will be edited under the same name.
@@ -328,18 +329,18 @@ function process_form($name, $person, $action) {
                             echo("<h4 style='color:FF0000'>" . $newFullName . " is the name of an existing person. Please enter another first and last name combination.</h4><br>");
                             include("editPersonForm.inc");
                         }
-                    
+                    */
                         //Else, this was a successful form submission,
-                        else {
+                        //else {
 
                             //so create a Behavior object and process the form to edit a behavior.
-                            $personToEdit = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType);
+                            $personToEdit = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType, $id);
                             process_form($oldName, $personToEdit, "edit");
                             echo ('</div>');
                             //include('footer.inc');
                             echo('</div></body></html>');
                             die();
-                        }
+                        //}
                     } 
                 }
 
