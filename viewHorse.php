@@ -48,7 +48,7 @@ button {
 }
 .split {
   height: 100%;
-  width: 50%;
+  width: 75%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -58,12 +58,12 @@ button {
 
 /* Control the left side */
 .left {
-  left: 0;
+  left: 25;
 }
 
 /* Control the right side */
 .right {
-  right: 0;
+  right: 35;
 }
 
 /* If you want the content centered horizontally and vertically */
@@ -101,12 +101,12 @@ button {
                 <?php 
                 include_once('database/dbinfo.php');
                 $con=connect();
-                if ($_GET['search']!=NULL){
+                if (isset($_GET['search'])){
                     $qry=searchBy($_GET['search']);
                 } else {
                     $qry='select * from horseDB order by pastureNum ASC';
                 }
-                if ($_GET['order']!=NULL){
+                if (isset($_GET['order'])){
                     $qry=orderBy($_GET['order']);
                 }
                 $fetched=mysqli_query($con,$qry);
@@ -135,9 +135,6 @@ button {
             </table>
         </div>
         <div class="split right">
-<<<<<<< Updated upstream
-            <p split>Viewing the behaviors and comments on horses here</p>
-=======
             <table style="width: 90%; height:70%">
                 <th style='width:20%; height:10%'>
                     <p>notes</p>
@@ -169,7 +166,6 @@ button {
          
 
             <p>Viewing the behaviors and comments on horses here</p>
->>>>>>> Stashed changes
         </div>
     </body>
 </html>
