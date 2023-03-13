@@ -13,7 +13,7 @@
     echo('</form>');
 
     if($_SERVER['REQUEST_METHOD'] == "POST" AND ISSET($_POST['destroySession'])){
-    	destroy_session();
+    	session_destroy();
     }
 
 
