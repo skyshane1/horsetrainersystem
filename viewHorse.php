@@ -120,11 +120,11 @@ button {
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
-                    echo '<td>'.$horseName.'&nbsp;</td>'; 
-                    echo '<td>'.$horseRank.'&nbsp;</td>';
-                    echo '<td>'.$horseColor.'&nbsp;</td>';
-                    echo '<td>'.$horseBreed.'&nbsp;</td>';
-                    echo '<td>'.$horsePastureNum.'&nbsp;</td>';
+                    echo '<td><form method="get"><button type="submit" class="headerbutton" name="curr_horse" value='.$horseName.' ></form>'.$horseName.'</button>&nbsp;</td>'; 
+                    echo '<td>'.$horseRank.'</button>&nbsp;</td>';
+                    echo '<td>'.$horseColor.'</button>&nbsp;</td>';
+                    echo '<td>'.$horseBreed.'</button>&nbsp;</td>';
+                    echo '<td>'.$horsePastureNum.'</button>&nbsp;</td>';
 
                     echo '</tr>';
 
@@ -135,7 +135,41 @@ button {
             </table>
         </div>
         <div class="split right">
+<<<<<<< Updated upstream
             <p split>Viewing the behaviors and comments on horses here</p>
+=======
+            <table style="width: 90%; height:70%">
+                <th style='width:20%; height:10%'>
+                    <p>notes</p>
+                </th>
+                <th style='height:10%'>
+				<?php
+			if (isset($_GET['curr_horse'])){
+				echo '<p>Viewing notes of ' .$_GET['curr_horse']. ' need to do sql</p>';
+				//Select note, trainername, date from notesdb where horseName = $_GET['curr_horse'].
+				//if notes:
+				//else:
+				//horse has no notes
+   			} else {
+        			echo '<p>No horse name selected yet lol</p>';
+    			}
+                    //<p>horsename via _session['curr_horse']</p>
+			?>
+                </th>
+                <tr style='width:20%'>
+                    <div>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+         
+
+
+         
+
+            <p>Viewing the behaviors and comments on horses here</p>
+>>>>>>> Stashed changes
         </div>
     </body>
 </html>
