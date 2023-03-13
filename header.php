@@ -9,7 +9,7 @@
  */
  
     echo('<form action="header.php" method="post">');
-    	echo('<input type="submit" name="destroySession value="Logout" />');
+    	echo('<input type="submit" name="destroySession" value="Logout" />');
     echo('</form>');
 
     if($_SERVER['REQUEST_METHOD'] == "POST" AND ISSET($_POST['destroySession'])){
