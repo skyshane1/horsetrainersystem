@@ -140,15 +140,19 @@ function retrieve_person($personName) {
 
     //Create a database connection and retrieve a person with the name.
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE fullName='" . $personName. "';";
+    $query = "SELECT * FROM persondb WHERE username='" . $personName. "';";
     $result = mysqli_query($con,$query);
 
     //If the person does NOT exist in the database,
     if (mysqli_num_rows($result) != 1) {
-        mysqli_close($con);
+        $query = "SELECT * FROM persondb WHERE fullName='" . $personName. "';";
+        $result = mysqli_query($con,$query);
+        if (mysqli_num_rows($result) != 1) {
+            mysqli_close($con);
 
-        //close the connection and return false.
-        return false;
+            //close the connection and return false.
+            return false;
+        }
     }
 
     //Otherwise, make a Person object using the query result.
