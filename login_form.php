@@ -68,6 +68,7 @@ session_start();
                     echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
                 }
                 else {
+                    //echo('<p>'.$person->get_pass().'incorrect </p>');
                     echo('<div><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask either the 
         		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
         		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>. to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');

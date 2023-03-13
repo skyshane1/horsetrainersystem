@@ -13,8 +13,10 @@ class Person {
 	private $username; //string
 	private $pass; //strng
     private $userType; //string
+
+    private $id;
     
-    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
+    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType, $id) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->fullName = $fullName;
@@ -23,6 +25,7 @@ class Person {
 		$this->username = $username;
 		$this->pass = $pass;
         $this->userType = $userType;
+        $this->id = $id;
     }
 
     function get_firstName() {
@@ -55,5 +58,9 @@ class Person {
 
     function get_userType() {
         return $this->userType;
+    }
+
+    function get_id() {
+        return $this->id;
     }
 }
