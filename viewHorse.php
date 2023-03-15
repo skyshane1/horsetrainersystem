@@ -149,26 +149,24 @@ button {
                 </th>
                 <th style='height:10%'>
 				<?php
-                if ($_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
                     $_SESSION['curr_horse']=$_GET['curr_horse_button'];
 
                 }
-		    	if ($_SESSION['curr_horse']!=NULL){
-		    		echo '<p>Viewing notes of ' .$_SESSION.['curr_horse']. ' need to do sql</p>';
-                    $curr_horse_qry=searchBy($_SESSION['curr_horse']);
+		if (isset($_SESSION['curr_horse'])){
+		    echo '<p>Viewing notes of ' .$_SESSION['curr_horse']. ' need to do sql</p>';
+                    $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
                     $curr_fetched=mysqli_query($con,$curr_horse_qry);
-                    $curr_horse=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC);
-                    echo '<p>heres the horse'.$curr_horse['horseName'].'<p>';
+			while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+				$hnote = $row['note'];
+				echo "<p> ".$hnote. "";
+				echo ": note written by " .$row['trainerName']. "";
+			}
 
-
-				//Select note, trainername, date from notesdb where horseName = $_GET['curr_horse'].
-				//if notes:
-				//else:
-				//horse has no notes
-   			} else {
+   			} 
+			else {
         			echo '<p>No horse name selected yet lol</p>';
     			}
-                    //<p>horsename via _session['curr_horse']</p>
 			?>
                 </th>
                 <tr style='width:20%'>
