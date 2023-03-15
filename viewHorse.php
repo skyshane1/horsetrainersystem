@@ -101,12 +101,12 @@ button {
                 <?php 
                 include_once('database/dbinfo.php');
                 $con=connect();
-                if ($_GET['search']!=NULL){
+                if (isset($_GET['search'])){
                     $qry=searchBy($_GET['search']);
                 } else {
                     $qry='select * from horseDB order by pastureNum ASC';
                 }
-                if ($_GET['order']!=NULL){
+                if (isset($_GET['order'])){
                     $qry=orderBy($_GET['order']);
                 }
                 $fetched=mysqli_query($con,$qry);
