@@ -60,9 +60,14 @@
         echo('<br><br>');
         echo('<strong>Trainer Actions</strong> | 
                         <a href="personActions.php?formAction=searchPeople"><u>Search Trainers</u></a>, 
-                        <a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>, 
-                        <a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>,
-                        <a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
+                        <a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>,');
+        if($_SESSION['access_level'] == 2){
+            echo('<a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>,');
+        } else if ($_SESSION['access_level'] == 1){
+            echo('<a href="personActions.php?formAction=editPerson"><u>Edit Account</u></a>,');
+        }
+
+    echo('<a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
         echo("<br><br>");
 
         echo("_______________________________________________________________________________________________________________________________________");
