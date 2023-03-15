@@ -25,7 +25,7 @@ table, tr, td{
         border: 2px solid black;
         border-radius: 10px;
     }
-td:hover {
+.horsebutton:hover {
     background-color: #900C3F;
     color: #FFFFFF;
 }
@@ -38,6 +38,13 @@ button {
 	background-color: #581845;
     color: #FFFFFF;
 }
+.horsebutton {
+    border:none;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 100%;
+
+}
 .trodd {
     background-color:#71F8A6;
     color: black;
@@ -48,11 +55,11 @@ button {
 }
 .split {
   height: 100%;
-  width: 75%;
+  width: 65%;
   position: fixed;
   z-index: 1;
   top: 0;
-  overflow-x: hidden;
+  overflow-x: lock;
   padding-top: 60px;
 }
 
@@ -111,6 +118,7 @@ button {
                 }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
+                echo '<form method="get">';
                 while($row=mysqli_fetch_array($fetched, MYSQLI_ASSOC)){
                     $horseName=$row['horseName'];
                     $horseRank=$row['colorRank'];
@@ -120,17 +128,17 @@ button {
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
-                    echo '<td><form method="get"><button type="submit" class="headerbutton" name="curr_horse" value='.$horseName.' ></form>'.$horseName.'</button>&nbsp;</td>'; 
-                    echo '<td>'.$horseRank.'</button>&nbsp;</td>';
-                    echo '<td>'.$horseColor.'</button>&nbsp;</td>';
-                    echo '<td>'.$horseBreed.'</button>&nbsp;</td>';
-                    echo '<td>'.$horsePastureNum.'</button>&nbsp;</td>';
-
+                    echo '<td><button type="submit" class="horsebutton" name="curr_horse_button" value='.$horseName.'>'.$horseName.'</button&nbsp;</td>'; 
+                    echo '<td>'.$horseRank.'&nbsp;</td>';
+                    echo '<td>'.$horseColor.'&nbsp;</td>';
+                    echo '<td>'.$horseBreed.'&nbsp;</td>';
+                    echo '<td>'.$horsePastureNum.'&nbsp;</td>';
                     echo '</tr>';
 
                 $indx++;
 
                 }
+                echo '</form>';
                 ?>
             </table>
         </div>
@@ -141,8 +149,18 @@ button {
                 </th>
                 <th style='height:10%'>
 				<?php
-			if (isset($_GET['curr_horse'])){
-				echo '<p>Viewing notes of ' .$_GET['curr_horse']. ' need to do sql</p>';
+                if ($_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                    $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+
+                }
+		    	if ($_SESSION['curr_horse']!=NULL){
+		    		echo '<p>Viewing notes of ' .$_SESSION.['curr_horse']. ' need to do sql</p>';
+                    $curr_horse_qry=searchBy($_SESSION['curr_horse']);
+                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
+                    $curr_horse=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC);
+                    echo '<p>heres the horse'.$curr_horse['horseName'].'<p>';
+
+
 				//Select note, trainername, date from notesdb where horseName = $_GET['curr_horse'].
 				//if notes:
 				//else:
