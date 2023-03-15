@@ -64,6 +64,7 @@ session_start();
                         $_SESSION['access_level'] = 1;
                     $_SESSION['f_name'] = $person->get_firstName();
                     $_SESSION['l_name'] = $person->get_lastName();
+                    $_SESSION['full_name'] = $person->get_fullName();
                     $_SESSION['_id'] = $_POST['user'];
                     echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
                 }

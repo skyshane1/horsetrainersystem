@@ -269,7 +269,10 @@ function process_form($name, $person, $action) {
                 else if($formAction == 'editPerson') {
 
                     //get the old title of the person, in case the user edited the person.
-                    $oldName = $_POST['personName'];
+                    if($_SESSION['access_level'] == 2)
+                        $oldName = $_POST['personName'];
+                    if($_SESSION['access_level'] == 1)
+                        $oldName = $_SESSION['full_name'];
 
                     //Then, display the form for adding/editing behaviors.
                     include("editPersonForm.inc");
