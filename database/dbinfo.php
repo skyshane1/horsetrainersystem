@@ -18,10 +18,10 @@
 //Create a connection to the database
     //If the directions are the same as the Fall 2022 semester, these credentials are correct.
 function connect() {
-    $host = "localhost";
+    $host = "localhost"; 
+    $username = "homebasedb";
+    $password = "homebasedb";
     $database = "homebasedb";
-    $username = "root";
-    $password = "";
 
     $con = mysqli_connect($host, $username, $password, $database);
     if (!$con) { 
