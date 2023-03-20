@@ -84,6 +84,8 @@ button {
 
 
 </style>    
+
+
     <header style='text-align:center'>
         <h1>View Horses</h1>
     </header>
@@ -144,36 +146,38 @@ button {
         </div>
         <div class="split right">
             <table style="width: 90%; height:70%">
+            <tr>
                 <th style='width:20%; height:10%'>
-                    <p>notes</p>
+                Notes
                 </th>
                 <th style='height:10%'>
-				<?php
-                if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
-                    $_SESSION['curr_horse']=$_GET['curr_horse_button'];
-
-                }
-		if (isset($_SESSION['curr_horse'])){
-		    echo '<p>Viewing notes of ' .$_SESSION['curr_horse']. ' need to do sql</p>';
-                    $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
-                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
-			while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
-				$hnote = $row['note'];
-				echo "<p> ".$hnote. "";
-				echo ": note written by " .$row['trainerName']. "";
-			}
-
-   			} 
-			else {
-        			echo '<p>No horse name selected yet lol</p>';
-    			}
-			?>
+                Behaviors
                 </th>
-                <tr style='width:20%'>
-                    <div>
-                </tr>
-                <tr>
+            </tr>
+            <tr><td style='border:none;vertical-align:top'>
+            <!--add scrollbar here-->
+                <table style='border:none;vertical-align:top;'>
+                        <?php
+                            if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                                $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+                            }
+	                    if (isset($_SESSION['curr_horse'])){
+	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
 
+                                    $curr_horse_qry="Select * from notesDB where horseName = '" .($_SESSION['curr_horse']). "';";
+                                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
+	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+	                		$hnote = $row['note'];
+	                		echo "<tr><td> ".$hnote. " ";
+	                		echo "<br>- <font size='1'>" .$row['trainerName']." ".$row['noteDate']."</font></td></tr>";
+	                	}
+	                	} 
+	                	else {
+                    			echo '<p>No horse name selected yet lol</p>';
+	                		}
+	                	?>
+                </table></td>
+                    <td>behaviors here :/</td>
                 </tr>
             </table>
          
