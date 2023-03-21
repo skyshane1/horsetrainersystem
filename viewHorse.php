@@ -15,9 +15,41 @@ function orderBy($in){
         $_SESSION['prev']='';
     }
     $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
-    return $qry; }
+    return $qry; 
+}
+
+function addNoteToDB($horseName,$note,$date,$time){
+    $con=connect();
+    $qry="INSERT INTO `notesDB` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerName`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', 'admin');";
+    return mysqli_query($con,$qry); 
+}
 
 ?>
+
+
+<script>
+
+function addNote(){
+    document.getElementById("addNote").style.display="block";
+}
+
+function cancelNote(){
+    document.getElementById("addNote").style.display="none";
+}
+
+
+function submitNote(horseName="Boxer",note="Did bad :("){
+    console.log("<p>hello</p>");
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    addNoteToDB(horseName,note,date,time);
+    return true;
+}
+
+
+</script>
+
 
 <html>
 <style>
@@ -82,6 +114,30 @@ button {
   text-align: center;
 }
 
+.addNote {
+    text-align: center;
+    border-radius: 13px;  /*remember this!! */
+}
+
+.addNote:hover{
+    color:white;
+    background-color: #25663E;
+}
+
+.form-popup {
+    display:none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+}
+
+.form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}   
 
 </style>    
 
@@ -144,6 +200,23 @@ button {
                 ?>
             </table>
         </div>
+                
+            <!-- Add Note -->
+            <div class="form-popup" id="addNote">
+              <form class="form-container">
+                <h1>Login</h1>
+
+                <label for="Note"><b>Note</b></label>
+                <input type="text" placeholder="Enter Note" name="note" required>
+
+                <?php
+                echo "<button type='button' class='btn' onclick='submitNote(".$_SESSION['curr_horse'].",".$_GET['note'].")'>Add</button>"
+                ?>
+                <button type="button" class="btn cancel" onclick="cancelNote()">Close</button>
+              </form>
+            </div>
+            <!-- End Add Note -->
+
         <div class="split right">
             <table style="width: 90%; height:70%">
             <tr>
@@ -176,6 +249,7 @@ button {
                     			echo '<p>No horse name selected yet lol</p>';
 	                		}
 	                	?>
+                        <tr><td><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
                 </table></td>
                     <td>behaviors here :/</td>
                 </tr>
