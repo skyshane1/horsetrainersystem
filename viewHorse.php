@@ -16,6 +16,7 @@ function orderBy($in){
     }
     $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
     return $qry; 
+
 }
 
 function addNoteToDB($horseName,$note,$date,$time){
@@ -24,10 +25,16 @@ function addNoteToDB($horseName,$note,$date,$time){
     return mysqli_query($con,$qry); 
 }
 
+if (isset($_POST['dbnote'])){
+    $dbnote=$_POST['dbnote'];
+    addNoteToDB($dbnote[0],$dbnote[1],$dbnote[2],$dbnote[3]);
+}
+
 ?>
 
 
-<script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+
 
 function addNote(){
     document.getElementById("addNote").style.display="block";
@@ -38,12 +45,18 @@ function cancelNote(){
 }
 
 
-function submitNote(horseName="Boxer",note="Did bad :("){
-    console.log("<p>hello</p>");
+function submitNote(horseName,note){
+    console.log("inside");
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    addNoteToDB(horseName,note,date,time);
+    jQuery.ajax({
+        type: "POST",
+        url:window.location.href,
+        data: {dbnote:[horseName,note,date,time]}
+    })
+    //addNoteToDB(horseName,note,date,time);
+    cancelNote();
     return true;
 }
 
@@ -203,16 +216,15 @@ button {
                 
             <!-- Add Note -->
             <div class="form-popup" id="addNote">
-              <form class="form-container">
-                <h1>Login</h1>
-
-                <label for="Note"><b>Note</b></label>
-                <input type="text" placeholder="Enter Note" name="note" required>
-
                 <?php
-                echo "<button type='button' class='btn' onclick='submitNote(".$_SESSION['curr_horse'].",".$_GET['note'].")'>Add</button>"
+              echo "<form class='form-container'>";
+                echo "<h1>Add Note</h1>";
+
+                echo "<label for='Note'><b>Note</b></label>";
+                echo "<input type='text' placeholder='Enter Note' name='note' required>";
+                echo "<button type='button' class='btn' onclick='submitNote(\"".$_SESSION['curr_horse']."\",\"boxer is so good\")'>Add</button>";
+                //echo "<button type='button' class='btn cancel' onclick='cancelNote()'>Close</button>";
                 ?>
-                <button type="button" class="btn cancel" onclick="cancelNote()">Close</button>
               </form>
             </div>
             <!-- End Add Note -->
