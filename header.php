@@ -7,9 +7,21 @@
  * (see <http://www.gnu.org/licenses/ for more information).
  * 
  */
+ 
+    echo('<form action="header.php" method="post">');
+    	echo('<input type="submit" name="destroySession" value="Logout" />');
+    echo('</form>');
+
+    if($_SERVER['REQUEST_METHOD'] == "POST" AND ISSET($_POST['destroySession'])){
+    	session_destroy();
+    }
+
+
+
     if($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1){
         header('Location: login_form.php');
     }
+
 ?>
 <!-- Begin Header -->
 <style type="text/css">
