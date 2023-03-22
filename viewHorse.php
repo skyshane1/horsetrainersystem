@@ -14,14 +14,14 @@ function orderBy($in){
         $order="DESC";
         $_SESSION['prev']='';
     }
-    $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
+    $qry='select * from horsedb order by '.$userSearch.' '.$order.' ';
     return $qry; 
 
 }
 
 function addNoteToDB($horseName,$note,$date,$time){
     $con=connect();
-    $qry="INSERT INTO `notesDB` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerName`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', 'admin');";
+    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerName`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', 'admin');";
     return mysqli_query($con,$qry); 
 }
 ?>
@@ -233,7 +233,7 @@ button {
 	                    if (isset($_SESSION['curr_horse'])){
 	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
 
-                                    $curr_horse_qry="Select * from notesDB where horseName = '" .($_SESSION['curr_horse']). "';";
+                                    $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
                                     $curr_fetched=mysqli_query($con,$curr_horse_qry);
 	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
 	                		$hnote = $row['note'];
