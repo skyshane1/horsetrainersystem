@@ -2,7 +2,7 @@
 session_start();
 function searchBy($in){
     $userSearch='\'%'.$in.'%\'';
-    $qry='select * from horseDB where horseName like '.$userSearch.'';
+    $qry='select * from horsedb where horseName like '.$userSearch.'';
     return $qry;
 }
 function orderBy($in){
@@ -14,7 +14,7 @@ function orderBy($in){
         $order="DESC";
         $_SESSION['prev']='';
     }
-    $qry='select * from horseDB order by '.$userSearch.' '.$order.' ';
+    $qry='select * from horsedb order by '.$userSearch.' '.$order.' ';
     return $qry; }
 
 ?>
@@ -113,7 +113,7 @@ button {
                 if (isset($_GET['search'])){
                     $qry=searchBy($_GET['search']);
                 } else {
-                    $qry='select * from horseDB order by pastureNum ASC';
+                    $qry='select * from horsedb order by pastureNum ASC';
                 }
                 if (isset($_GET['order'])){
                     $qry=orderBy($_GET['order']);
