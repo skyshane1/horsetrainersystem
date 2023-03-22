@@ -192,8 +192,8 @@ button {
 
                 if (isset($_POST['note'])){
                     $note=$_POST['note'];
-                    $date=date("Y-m-d H:i:s");
-                    $time=date("H:i:s");
+                    $date=date("Y-m-d");
+                    $time=date("Y-m-d H:i:s");
                     addNoteToDB($_SESSION['curr_horse'],$note,$date,$time);
                     $_POST['note']=NULL;
                 }
