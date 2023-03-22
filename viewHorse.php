@@ -25,7 +25,7 @@ table, tr, td{
         border: 2px solid black;
         border-radius: 10px;
     }
-td:hover {
+.horsebutton:hover {
     background-color: #900C3F;
     color: #FFFFFF;
 }
@@ -38,6 +38,13 @@ button {
 	background-color: #581845;
     color: #FFFFFF;
 }
+.horsebutton {
+    border:none;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 100%;
+
+}
 .trodd {
     background-color:#71F8A6;
     color: black;
@@ -48,11 +55,11 @@ button {
 }
 .split {
   height: 100%;
-  width: 75%;
+  width: 65%;
   position: fixed;
   z-index: 1;
   top: 0;
-  overflow-x: hidden;
+  overflow-x: lock;
   padding-top: 60px;
 }
 
@@ -77,6 +84,8 @@ button {
 
 
 </style>    
+
+
     <header style='text-align:center'>
         <h1>View Horses</h1>
     </header>
@@ -111,6 +120,7 @@ button {
                 }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
+                echo '<form method="get">';
                 while($row=mysqli_fetch_array($fetched, MYSQLI_ASSOC)){
                     $horseName=$row['horseName'];
                     $horseRank=$row['colorRank'];
@@ -120,33 +130,54 @@ button {
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
-                    echo '<td>'.$horseName.'&nbsp;</td>'; 
+                    echo '<td><button type="submit" class="horsebutton" name="curr_horse_button" value='.$horseName.'>'.$horseName.'</button&nbsp;</td>'; 
                     echo '<td>'.$horseRank.'&nbsp;</td>';
                     echo '<td>'.$horseColor.'&nbsp;</td>';
                     echo '<td>'.$horseBreed.'&nbsp;</td>';
                     echo '<td>'.$horsePastureNum.'&nbsp;</td>';
-
                     echo '</tr>';
 
                 $indx++;
 
                 }
+                echo '</form>';
                 ?>
             </table>
         </div>
         <div class="split right">
             <table style="width: 90%; height:70%">
+            <tr>
                 <th style='width:20%; height:10%'>
-                    <p>notes</p>
+                Notes
                 </th>
                 <th style='height:10%'>
-                    <p>horsename via _session['curr_horse']</p>
+                Behaviors
                 </th>
-                <tr style='width:20%'>
-                    <div>
-                </tr>
-                <tr>
+            </tr>
+            <tr><td style='border:none;vertical-align:top'>
+            <!--add scrollbar here-->
+                <table style='border:none;vertical-align:top;'>
+                        <?php
+                            if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                                $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+                            }
+	                    if (isset($_SESSION['curr_horse'])){
+	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
 
+                                    $curr_horse_qry="Select * from notesDB where horseName = '" .($_SESSION['curr_horse']). "';";
+                                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
+	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+	                		$hnote = $row['note'];
+	                		echo "<tr><td> ".$hnote. " ";
+	                		echo "<br>- <font size='1'>" .$row['trainerName']." ".$row['noteDate']."</font></td></tr>";
+	                	}
+	                	} 
+	                	else {
+                    			echo '<p>No horse name selected yet lol</p>';
+	                		}
+	                	?>
+                </table></td>
+                    <td>behaviors here :/</td>
                 </tr>
             </table>
          
