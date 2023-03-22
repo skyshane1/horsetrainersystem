@@ -17,7 +17,7 @@
         echo("<p>When finished, hit <b>Select Person</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/personActions.php?formAction=editPerson'>");
+        echo("<form method='POST' action='personActions.php?formAction=editPerson'>");
     }
     else {
 
@@ -26,7 +26,7 @@
         echo("<p>When finished, hit <b>Remove Person</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/personActions.php?formAction=confirmRemove'>");
+        echo("<form method='POST' action='personActions.php?formAction=confirmRemove'>");
     }
 ?>
 

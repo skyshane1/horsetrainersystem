@@ -37,7 +37,7 @@ function add_person($person) {
     if ($result == null || mysqli_num_rows($result) == 0) {
         
         //add the person to the database.
-        mysqli_query($con,'INSERT INTO persondb VALUES("' .
+        mysqli_query($con,'INSERT INTO persondb (`firstName`, `lastName`, `fullName`, `phone`, `email`, `username`, `pass`, `userType`, `id`) VALUES("' .
                 $person->get_firstName() . '","' .
                 $person->get_lastName() . '","' .
                 $person->get_fullName() . '","' .
@@ -45,7 +45,8 @@ function add_person($person) {
                 $person->get_email() . '","' .
                 $person->get_username() . '","' .
                 $person->get_pass() . '","' .
-                $person->get_userType() . '");');							        
+                $person->get_usertype() . '","' .
+                "NULL" . '");');
         
         //Close the connection and return true.
         mysqli_close($con);
@@ -85,13 +86,21 @@ function edit_person($name, $person) {
                                   username='" . $person->get_username() . "', 
                                   pass='" . $person->get_pass() . "', 
                                   userType='" . $person->get_userType() . "'
-                                  WHERE fullName='" . $name . "';";
+                                  WHERE id='" . $person->get_id() . "';";
 
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
     mysqli_close($con);
     return true;
+}
+
+function edit_password($name, $hash) {
+    $con=connect();
+    $query = "UPDATE persondb SET pass ='".$hash."'  WHERE username ='" .$name."'";
+
+    $result = mysqli_query($con, $query);
+    mysqli_close($con);
 }
 
 
@@ -104,12 +113,12 @@ function edit_person($name, $person) {
  * Return Values:
  *      true, the existing person was removed.
  */
-function remove_person($personName) {
+function remove_person($personId) {
 
     //Create a database connection and delete the person.
     $con=connect();
-    $query = 'SELECT * FROM persondb WHERE fullName = "' . $personName . '"';
-    $query = 'DELETE FROM persondb WHERE fullName = "' . $personName . '"';
+    $query = 'SELECT * FROM persondb WHERE id = "' . $personId . '"';
+    $query = 'DELETE FROM persondb WHERE id = "' . $personId . '"';
     $result = mysqli_query($con,$query);
 
     //Close the connection and return true.
@@ -131,15 +140,19 @@ function retrieve_person($personName) {
 
     //Create a database connection and retrieve a person with the name.
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE fullName='" . $personName . "';";
+    $query = "SELECT * FROM persondb WHERE username='" . $personName. "';";
     $result = mysqli_query($con,$query);
 
     //If the person does NOT exist in the database,
     if (mysqli_num_rows($result) != 1) {
-        mysqli_close($con);
+        $query = "SELECT * FROM persondb WHERE fullName='" . $personName. "';";
+        $result = mysqli_query($con,$query);
+        if (mysqli_num_rows($result) != 1) {
+            mysqli_close($con);
 
-        //close the connection and return false.
-        return false;
+            //close the connection and return false.
+            return false;
+        }
     }
 
     //Otherwise, make a Person object using the query result.
@@ -244,7 +257,8 @@ function make_a_person($result_row) {
                 $result_row['email'],
                 $result_row['username'],
                 $result_row['pass'],
-                $result_row['userType']);
+                $result_row['userType'],
+                $result_row['id']);
     return $thePerson;
 }
 
