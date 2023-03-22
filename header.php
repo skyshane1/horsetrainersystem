@@ -25,8 +25,8 @@
     <?PHP    
         echo("<br><b>"."CVHR Horse Training Management System"."</b> ");
         echo('<br><br>');
-        echo('<a href="' . $path . 'index.php">home</a>');
-        echo(' | <a href="' . $path . 'about.php">about</a>');
+        echo('<a href="index.php">home</a>');
+        echo(' | <a href="about.php">about</a>');
         echo('</br>');
         //echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK">help</a>');
         //echo(' | calendars: <a href="' . $path . 'calendar.php?venue=portland'.''.'">Portland, </a>');
@@ -36,13 +36,13 @@
         echo('<br>');
         echo('<strong>Horse Actions</strong>| 
                         <a href="horseActions.php?formAction=searchHorse"><u>Search Horse</u></a>,
-                        <a href="horseActions.php?formAction=addHorse"><u>Add Horse</u></a>, 
-                        <a href="horseActions.php?formAction=selectHorse"><u>Edit Horse</u></a>,
+                        <a href="addHorseForm.php"><u>Add Horse</u></a>, 
+                        <a href="updateHorse.php"><u>Update Horse</u></a>,
                         <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>');
         echo('<br><br>');
         echo('<strong>Behavior Actions</strong> | 
                         <a href="behaviorActions.php?formAction=searchBehavior"><u>Search Behaviors</u></a>, 
-                        <a href="behaviorActions.php?formAction=addBehavior"><u>Add Behavior</u></a>, 
+                        <a href="addBehaviorForm.php"><u>Add Behavior</u></a>, 
                         <a href="behaviorActions.php?formAction=selectBehavior"><u>Edit Behavior</u></a>,
                         <a href="behaviorActions.php?formAction=removeBehavior"><u>Remove Behavior</u></a>');
         echo('<br><br>');
