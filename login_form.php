@@ -15,8 +15,14 @@ session_start();
  * @version 3/28/2008, revised 7/1/2015
  */
 ?>
-
-<div id="content">
+<head>
+    <link rel="stylesheet" href="newstyle.css"/>
+    <title>Login</title>
+</head>
+<header>
+    <h1>CVHR Horse Training Management System</h1>
+</header>
+<body>
     <?PHP
     include_once('database/persondb.php');
     include_once('domain/Person.php');
@@ -25,19 +31,25 @@ session_start();
         echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
     }
     if (!array_key_exists('_submit_check', $_POST)) {
-        echo('<div><p>Access to Homebase requires a Username and a Password. ' .
-        '<ul>'
-        );
-        echo('<li>If you are applying for a volunteer position, enter the Username \'guest\' and a blank Password. ');
-        echo('<li>If you are a volunteer logging in for the first time, your Username is your first name followed by your ten digit phone number. ' .
-        'After you have logged in, you can change your password.  ');
-        echo('<li>(If you are having difficulty logging in or have forgotten your Password, please contact either the 
-        		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-        		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.) ');
-        echo '</ul>';
-        echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td>
-        		<td><input type="text" name="user" tabindex="1"></td></tr>
-        		<tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2"><input type="submit" name="Login" value="Login"></td></tr></table>');
+        ?>
+            <div class="flex-container">
+                <form method="post">
+                    <h1>Login</h1>
+                    <input type="hidden" name="_submit_check" value="true">
+                    <div>
+                        <label for="username">Username:</label>
+                        <input type="text" name="user" id="username">
+                    </div>
+                    <div>
+                        <label for="password">Password:</label>
+                        <input type="password" name="pass" id="password">
+                    </div>
+                    <section>
+                        <input type="submit" name="Login" value="Login">
+                    </section>
+                </form>
+            </div>
+        <?php
     } else {
         //check if they logged in as a guest:
         if ($_POST['user'] == "guest" && $_POST['pass'] == "") {
@@ -69,7 +81,7 @@ session_start();
                     echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
                 }
                 else {
-                    //echo('<p>'.$person->get_pass().'incorrect </p>');
+                    echo('<p>'.$person->get_pass().' incorrect should be '.$hash.'</p>');
                     echo('<div><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask either the 
         		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
         		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>. to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');
@@ -96,4 +108,4 @@ session_start();
     }
     ?>
     <?PHP include('footer.inc'); ?>
-</div>
+</body>

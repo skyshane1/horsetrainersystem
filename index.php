@@ -12,7 +12,7 @@ session_start();
         <title>
             CVHR Horse Training Management System
         </title>
-        <link rel="stylesheet" href="styles.css" type="text/css" />
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
         <style>
         	#appLink:visited {
         		color: gray; 
