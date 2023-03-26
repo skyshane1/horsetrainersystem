@@ -76,7 +76,7 @@ function process_form($name, $person, $action) {
     else {
 
         //so remove a behavior from the database.
-        $result = remove_person($name); 
+        $result = remove_person($person->get_id());
         if (!$result) 
             echo('<p class="error">Unable to remove from the database. <br>Please report this error.');
         else 
@@ -127,7 +127,7 @@ function process_form($name, $person, $action) {
             }
         </style>
         <link rel="stylesheet" href="lib/jquery-ui.css" />
-        <link rel="stylesheet" href="styles.css" type="text/css" />
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
         <script src="lib/jquery-1.9.1.js"></script>
         <script src="lib/jquery-ui.js"></script>      
     </head>
