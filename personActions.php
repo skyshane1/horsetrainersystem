@@ -157,7 +157,13 @@ function process_form($name, $person, $action) {
                         $allPersons = getall_persondb();
 
                         echo("<h2><strong>List of People</strong></h2>");
-                        echo("<br>");
+			echo("<br>");
+			echo("<form action='personActions.php'>");
+				echo("<input type='hidden' name='formAction' value='searchPeople'>");
+				echo("<input type='text' placeholder='Search for Trainer' name='searchoption'>");
+				echo("<input type='submit' value='Search'>");
+				
+			echo("</form>");
                         echo("<table>
                                 <tr>
                                     <th>First Name</th>
