@@ -108,12 +108,12 @@ button {
 
 .addNote {
     text-align: center;
-    border-radius: 13px;  /*remember this!! */
+    border-radius: 16px;  /*remember this!! */
 }
 
 .addNote:hover{
     color:white;
-    background-color: #25663E;
+    background-color: navy;
 }
 
 .form-popup {
@@ -134,7 +134,13 @@ button {
 .noteswrapper{ 
     overflow-y:scroll; 
     position:relative;
-    height: 500px;
+    height: 520px;
+}
+.sortwrapper{ 
+    overflow-y:scroll; 
+    position:relative;
+    height: 520px;
+    width: 360px;
 }
 </style>    
 
@@ -150,6 +156,7 @@ button {
                     <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
                 </form>
             </div>
+            <div class='sortwrapper'>
             <table class='sortable' style='text-align:center'>
                 <tr>
                     <form method='get'>
@@ -173,7 +180,7 @@ button {
                 }
                 $fetched=mysqli_query($con,$qry);
                 $indx=0;
-                echo '<form method="get">';
+                echo "<form method='get'>";
                 while($row=mysqli_fetch_array($fetched, MYSQLI_ASSOC)){
                     $horseName=$row['horseName'];
                     $horseRank=$row['colorRank'];
@@ -204,7 +211,7 @@ button {
                     $_POST['note']=NULL;
                 }
                 ?>
-            </table>
+            </table></div>
         </div>
                 
             <!-- Add Note -->
@@ -252,7 +259,7 @@ button {
                     			echo '<p>No horse name selected yet lol</p>';
 	                		}
 	                	?>
-                        <tr><td><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
+                        <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
                 </table></div></td>
                     <td>behaviors here :/</td>
                 </tr>
