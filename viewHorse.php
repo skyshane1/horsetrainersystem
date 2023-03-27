@@ -42,6 +42,9 @@ function cancelNote(){
 
 <html>
 <style>
+html{
+    height: 100%;
+}
 table, tr, td{
         border: 2px solid black;
         border-radius: 10px;
@@ -118,7 +121,7 @@ button {
     position: fixed;
     bottom: 0;
     right: 15px;
-    border: 3px solid #f1f1f1;
+    border: 3px solid black;
     z-index: 9;
 }
 
@@ -128,6 +131,11 @@ button {
     background-color: white;
 }   
 
+.noteswrapper{ 
+    overflow-y:scroll; 
+    position:relative;
+    height: 500px;
+}
 </style>    
 
 
@@ -224,7 +232,7 @@ button {
                 </th>
             </tr>
             <tr><td style='border:none;vertical-align:top'>
-            <!--add scrollbar here-->
+             <div class='noteswrapper'>
                 <table style='border:none;vertical-align:top;'>
                         <?php
                             if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
@@ -232,13 +240,12 @@ button {
                             }
 	                    if (isset($_SESSION['curr_horse'])){
 	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
-
-                                    $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
-                                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
+                            $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
+                            $curr_fetched=mysqli_query($con,$curr_horse_qry);
 	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
 	                		$hnote = $row['note'];
 	                		echo "<tr><td> ".$hnote. " ";
-	                		echo "<br>- <font size='1'>" .$row['trainerName']." ".$row['noteDate']."</font></td></tr>";
+	                		echo "<br>- <font size='1'>" .$row['trainerName']." ".$row['noteDate']."</font></td></tr></div>";
 	                	}
 	                	} 
 	                	else {
@@ -246,7 +253,7 @@ button {
 	                		}
 	                	?>
                         <tr><td><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
-                </table></td>
+                </table></div></td>
                     <td>behaviors here :/</td>
                 </tr>
             </table>
