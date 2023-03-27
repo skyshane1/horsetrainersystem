@@ -11,7 +11,6 @@
  */
 
 session_start();
-session_cache_expire(30);
 include_once('database/persondb.php');
 include_once('database/dbinfo.php');
 include_once('domain/Person.php');

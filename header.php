@@ -19,11 +19,10 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
 <head>
     <link rel="stylesheet" href="newstyle.css"/>
 </head>
-<body>
 <div class="container">
     <div class="header">
-        <a href="index.php">home</a>
-        <a href="about.php">about</a>
+        <a href="index.php" class="hlink">Home</a>
+        <a href="about.php" class="hlink">About</a>
         <div class="dropdown">
             <button class="dropbtn">Horse Actions</button>
             <div class="dropdown-content">
@@ -55,11 +54,8 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
                 <a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>
             </div>
         </div>
-        <form action="header.php" method="post" class="logout" style="float:right">
-            <input type="submit" name="destroySession" value="Logout"/>
-        </form>
+        <a href="logout.php" class="hlink" style="float:right">Logout</a>
     </div>
 </div>
-</body>
 </html>
 

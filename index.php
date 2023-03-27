@@ -20,7 +20,7 @@ session_start();
         </style> 
     </head>
     <body>
-        <div id="container">
+        <div>
             <?PHP include('header.php'); ?>
             <div id="content">
                 <?PHP
