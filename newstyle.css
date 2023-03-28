@@ -5,8 +5,13 @@
     border-color: #313131;
 }
 
+.content {
+    max-width: 500px;
+    margin: auto;
+}
+
 body {
-    margin: 0px;
+    margin: 0;
 }
 
 a:visited{
@@ -15,10 +20,15 @@ a:visited{
 }
 
 form {
+    margin: 16px;
     padding: 16px;
     background: #ffffff;
     border-radius: 15px;
     box-shadow: 5px 5px 10px #dcdcdc;
+}
+
+fieldset{
+    border: none;
 }
 
 .hlink {
@@ -38,9 +48,11 @@ form {
 
 h1 {
     text-align: center;
+    padding: 16px;
+    margin: 0;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email], input[type=tel] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -54,10 +66,10 @@ input[type=text], input[type=password] {
     box-shadow: 5px 5px 10px #dcdcdc;
 }
 
-
 .flex-container {
     display: flex;
     justify-content: center;
+    margin: 1em;
 }
 
 .flex-item {
@@ -100,7 +112,7 @@ input[type=submit]:hover {
     position: absolute;
     background-color: #f8f8f8;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
 }
 
@@ -126,4 +138,15 @@ input[type=submit]:hover {
 .dropdown:hover .dropbtn {
     background-color: #000091;
     color: #f8f8f8;
+}
+
+select{
+    font-size: 16px;
+    background-color: #F8F8F8;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px #dcdcdc;
 }

@@ -22,7 +22,7 @@ session_start();
     <body>
         <div>
             <?PHP include('header.php'); ?>
-            <div id="content">
+            <div class="content">
                 <?PHP
                 include_once('domain/Horse.php');
                 include_once('database/dbinfo.php');
