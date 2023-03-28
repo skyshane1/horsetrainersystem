@@ -133,7 +133,7 @@ function process_form($name, $person, $action) {
     <body>
         <div id="container">
             <?PHP include('header.php'); ?>
-            <div id="content">
+            <div class="content">
                 <?PHP 
 
                 //If the user wanted to search all people,

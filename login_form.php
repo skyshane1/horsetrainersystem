@@ -15,14 +15,16 @@ session_start();
  * @version 3/28/2008, revised 7/1/2015
  */
 ?>
+<html lang="">
 <head>
     <link rel="stylesheet" href="newstyle.css"/>
     <title>Login</title>
 </head>
-<header>
-    <h1>CVHR Horse Training Management System</h1>
-</header>
 <body>
+<div class="container">
+    <h1>CVHR Horse Training Management System</h1>
+</div>
+<div class="content">
     <?PHP
     include_once('database/persondb.php');
     include_once('domain/Person.php');
@@ -32,23 +34,21 @@ session_start();
     }
     if (!array_key_exists('_submit_check', $_POST)) {
         ?>
-            <div class="flex-container">
-                <form method="post">
-                    <h1>Login</h1>
-                    <input type="hidden" name="_submit_check" value="true">
-                    <div>
-                        <label for="username">Username:</label>
-                        <input type="text" name="user" id="username">
-                    </div>
-                    <div>
-                        <label for="password">Password:</label>
-                        <input type="password" name="pass" id="password">
-                    </div>
-                    <section>
-                        <input type="submit" name="Login" value="Login">
-                    </section>
-                </form>
+        <form method="post">
+            <h1>Login</h1>
+            <input type="hidden" name="_submit_check" value="true">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="user" id="username">
             </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="pass" id="password">
+            </div>
+            <section>
+                <input type="submit" name="Login" value="Login">
+            </section>
+        </form>
         <?php
     } else {
         //check if they logged in as a guest:
@@ -57,8 +57,7 @@ session_start();
             $_SESSION['access_level'] = 0;
             $_SESSION['_id'] = "guest";
             echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
-        }
-        //otherwise authenticate their password
+        } //otherwise authenticate their password
         else {
             $db_pass = $_POST['pass'];
             $hash = password_hash($db_pass, PASSWORD_DEFAULT);
@@ -67,7 +66,7 @@ session_start();
             if ($person) { //avoids null results
                 if (password_verify($db_pass, $person->get_pass())) { //if the passwords match, login
                     $_SESSION['logged_in'] = 1;
-                    date_default_timezone_set ("America/New_York");
+                    date_default_timezone_set("America/New_York");
                     if ($person->get_userType() == "applicant")
                         $_SESSION['access_level'] = 0;
                     else if ($person->get_userType() == "manager")
@@ -79,33 +78,63 @@ session_start();
                     $_SESSION['full_name'] = $person->get_fullName();
                     $_SESSION['_id'] = $_POST['user'];
                     echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
-                }
-                else {
-                    echo('<p>'.$person->get_pass().' incorrect should be '.$hash.'</p>');
+                } else {
                     echo('<div><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask either the 
         		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
         		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>. to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');
                     echo('<p>If you are a volunteer, your Username is your first name followed by your phone number with no spaces. ' .
-                    'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
-                    'then your Username would be <strong>John2071234567</strong>.  ');
+                        'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
+                        'then your Username would be <strong>John2071234567</strong>.  ');
                     echo('If you do not remember your password, please contact either the 
         		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
         		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.');
-                    echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2"><input type="submit" name="Login" value="Login"></td></tr></table>');
+                    echo('<form method="post">
+            <h1>Login</h1>
+            <input type="hidden" name="_submit_check" value="true">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="user" id="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="pass" id="password">
+            </div>
+            <section>
+                <input type="submit" name="Login" value="Login">
+            </section>
+        </form>');
                 }
             } else {
                 //At this point, they failed to authenticate
                 echo('<div><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask the House Manager to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');
                 echo('<p>If you are a volunteer, your Username is your first name followed by your phone number with no spaces. ' .
-                'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
-                'then your Username would be <strong>John2071234567</strong>.  ');
+                    'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
+                    'then your Username would be <strong>John2071234567</strong>.  ');
                 echo('If you do not remember your password, please contact either the 
         		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
         		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.');
-                echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2"><input type="submit" name="Login" value="Login"></td></tr></table>');
+                echo('<form method="post">
+            <h1>Login</h1>
+            <input type="hidden" name="_submit_check" value="true">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="user" id="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="pass" id="password">
+            </div>
+            <section>
+                <input type="submit" name="Login" value="Login">
+            </section>
+        </form>');
             }
         }
     }
     ?>
-    <?PHP include('footer.inc'); ?>
+</div>
+
+<?PHP include('footer.inc'); ?>
 </body>
+</html>
+
