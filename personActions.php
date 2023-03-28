@@ -153,8 +153,6 @@ function process_form($name, $person, $action) {
                     //Else, there are people in the database,
                     else {
 
-                        //so retrieve and show all of the people in a table.
-                        $allPersons = getall_persondb();
 
                         echo("<h2><strong>List of People</strong></h2>");
 			echo("<br>");
@@ -162,9 +160,21 @@ function process_form($name, $person, $action) {
 				echo("<input type='hidden' name='formAction' value='searchPeople'>");
 				echo("<input type='text' placeholder='Search for Trainer' name='searchoption'>");
 				echo("<input type='submit' value='Search'>");
+				if (isset($_GET['searchoption'])){
+					$searchValue=$_GET['searchoption'];
+				}
 				
 			echo("</form>");
-                        echo("<table>
+			if (empty($searchValue)){	
+				//so retrieve and show all of the people in a table.
+                        	$allPersons = getall_persondb();
+			}
+			else{
+				$allPersons = filter_persondb($searchValue);	
+
+			}
+
+		    echo("<table>
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>

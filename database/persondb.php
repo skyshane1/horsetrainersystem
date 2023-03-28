@@ -203,6 +203,35 @@ function getall_persondb() {
     return $thePersons;
 }
 
+function filter_persondb($name) {
+
+    //Create a connection and retrieve all the people information.
+    $con=connect();
+    $query = "SELECT * FROM persondb WHERE (lower(firstName) LIKE '%" . $name ."%') ORDER BY lastName, firstName;";
+    $result = mysqli_query($con,$query);
+    
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array, create a Person object for each query row, and add it to the array.
+    $result = mysqli_query($con,$query); //This line might be redundant.
+    $thePersons = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $thePerson = make_a_person($result_row);
+        $thePersons[] = $thePerson;
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $thePersons;
+}
 
 /*
  * Function name: getall_person_names()
