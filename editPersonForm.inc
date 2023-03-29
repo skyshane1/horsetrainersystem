@@ -37,8 +37,8 @@
         echo("<input type='hidden' name='oldName' value='$oldName'/>");
 
     ?>
+    <h2>Edit Account</h2>
     <fieldset>
-        <legend>Person Information:</legend>
         <?php
             if($formAction == "addPerson" || $formAction == "confirmAdd"){
                 //leave the fields blank

@@ -6,19 +6,21 @@
  */
 
 	session_start();
-	session_cache_expire(30);
+	if(session_status() != PHP_SESSION_ACTIVE){
+		session_cache_expire(30);
+	}
 ?>
 <html>
 	<head>
 		<title>
 			About
 		</title>
-		<link rel="stylesheet" href="styles.css" type="text/css" />
+		<link rel="stylesheet" href="newstyle.css" type="text/css" />
 	</head>
 	<body>
 		<div id="container">
 			<?PHP include('header.php');?>
-			<div id="content">
+			<div class="content">
 				<p><strong>Background</strong><br /><br />
 
 				Central Virginia Horse Rescue, Inc   is a 501(c)3 small  rescue founded in south central Virginia and 
