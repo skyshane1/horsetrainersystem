@@ -24,6 +24,12 @@ function addNoteToDB($horseName,$note,$date,$time){
     $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerName`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', 'admin');";
     return mysqli_query($con,$qry); 
 }
+
+function addBehaviorToDB($horseName,$behavior){
+    $con=connect();
+    $qry="INSERT INTO `horsetobehaviordb` (`horseName`, `behaviorTitle`) VALUES ('".$horseName."','".$behavior."');";
+    return mysqli_query($con,$qry); 
+}
 ?>
 
 
@@ -31,6 +37,13 @@ function addNoteToDB($horseName,$note,$date,$time){
 
 function addNote(){
     document.getElementById("addNote").style.display="block";
+}
+function addBehavior(){
+    document.getElementById("addBehavior").style.display="block";
+}
+
+function cancelBehavior(){
+    document.getElementById("addBehavior").style.display="none";
 }
 
 function cancelNote(){
@@ -112,6 +125,14 @@ button {
 }
 
 .addNote:hover{
+    color:white;
+    background-color: navy;
+}
+.addBehavior {
+    text-align: center;
+    border-radius: 16px;  /*remember this!! */
+}
+.addBehavior:hover{
     color:white;
     background-color: navy;
 }
@@ -210,6 +231,11 @@ button {
                     addNoteToDB($_SESSION['curr_horse'],$note,$date,$time);
                     $_POST['note']=NULL;
                 }
+		if (isset($_POST['behavior'])){
+                    $behavior=$_POST['behavior'];
+                    addBehaviorToDB($_SESSION['curr_horse'],$behavior);
+                    $_POST['behavior']=NULL;
+                }
                 ?>
             </table></div>
         </div>
@@ -227,7 +253,17 @@ button {
               </form>
             </div>
             <!-- End Add Note -->
-
+	<div class="form-popup" id="addBehavior">
+                <?php
+                echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Add Behavior</h1>";
+                echo "<label for='Behavior'><b>Behavior</b></label>";
+                echo "<input type='text' placeholder='Enter Behavior' name='behavior' required>";
+                echo "<button type='submit' class='btn'>Add</button>";
+                echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+                ?>
+              </form>
+            </div>
         <div class="split right">
             <table style="width: 90%; height:70%">
             <tr>
@@ -261,7 +297,30 @@ button {
 	                	?>
                         <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
                 </table></div></td>
-                    <td>behaviors here :/</td>
+	
+                    <td style='border:none;vertical-align:top'>
+             <div class='noteswrapper'>
+                <table style='border:none;vertical-align:top;'>
+                        <?php
+                            if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                                $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+                            }
+	                    if (isset($_SESSION['curr_horse'])){
+	                        echo '<tr style="width:30%;border:none;"><th>Viewing behaviours of ' .$_SESSION['curr_horse']. '</th></tr>';
+                            $curr_horse_qry="Select * from horsetobehaviordb where horseName = '" .($_SESSION['curr_horse']). "';";
+                            $curr_fetched=mysqli_query($con,$curr_horse_qry);
+	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+	                		$hbehavior = $row['behaviorTitle'];
+	                		echo "<tr><td> ".$hbehavior. " ";
+	                		
+	                	}
+	                	} 
+	                	else {
+                    			echo '<p>No horse name selected yet lol</p>';
+	                		}
+	                	?>
+                        <tr><td style='text-align:center;'><button class="addBehavior" onclick="addBehavior()">Add Behavior</button></td></tr>
+                </table></div></td>
                 </tr>
             </table>
          
