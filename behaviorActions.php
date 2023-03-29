@@ -120,7 +120,7 @@ function process_form($title, $behavior, $action) {
             }
         </style>
         <link rel="stylesheet" href="lib/jquery-ui.css" />
-        <link rel="stylesheet" href="styles.css" type="text/css" />
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
         <script src="lib/jquery-1.9.1.js"></script>
         <script src="lib/jquery-ui.js"></script>      
     </head>

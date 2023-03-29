@@ -32,9 +32,9 @@
 
 <input type="hidden" name="old_name" value="new">
 <input type="hidden" name="_form_submit" value="1">
+<h2>Person Name</h2>
 <fieldset>
-    <legend>Person Name:</legend>
-    <p>Person Name<span style="font-size:x-small;color:FF0000"></span>: </p>
+    <p>Person Name</p>
     <select name="personName" tabindex="1"> 
         <?PHP
 
