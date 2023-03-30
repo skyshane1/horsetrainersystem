@@ -62,13 +62,25 @@ function process_form($name, $person, $action) {
     //Else, if the user used the form to edit a behavior,
     else if($action == "edit") {
 
-        //edit the existing behavior in the database.
-        $result = edit_person($name, $person);
+        $dup = retrieve_person($name);
 
-        if (!$result) 
-            echo('<p class="error">Unable to edit the database. <br>Please report this error.');
-        else 
-            echo('<p>You have successfully edited the database! If you wish to edit another person, please click "Edit person" after "person Actions."</p>');
+        //If there's already a person with this name,
+        if ($dup == true) {
+
+            //print an error message.
+            echo('<p class="error">Unable to alter the database. <br>Another person named ' . $name . ' already exists.<br><br>');
+            echo('<p>If you wish to add another person, please click "Add person" after "person Actions."</p>');
+        }
+
+        else {
+            $result = edit_person($name, $person);
+
+            if (!$result)
+                echo('<p class="error">Unable to edit the database. <br>Please report this error.');
+            else
+                echo('<p>You have successfully edited the database! If you wish to edit another person, please click "Edit person" after "person Actions."</p>');
+        }
+        //edit the existing behavior in the database.
     }
 
     //Else, the user wants to remove a behavior (FOR LATER),
@@ -218,7 +230,6 @@ function process_form($name, $person, $action) {
                         //If newFirstName = "Owen" and newLastName = "Chong, then newUsername and newPass = "ochong".
                         $newUsername = $_POST['userName'];
                         $newPass = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                        //$newPass = $_POST['password'];
                         $newUserType = $_POST['userType'];
                         $newPerson = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType, $id);
 
@@ -237,7 +248,7 @@ function process_form($name, $person, $action) {
                         else {
 
                             //so process the form to add a behavior.
-                            process_form($newFullName, $newPerson, "add");
+                            process_form($newUsername, $newPerson, "add");
                             echo ('</div>');
                             echo('</div></body></html>');
                             die();
@@ -337,7 +348,7 @@ function process_form($name, $person, $action) {
 
                             //so create a Behavior object and process the form to edit a behavior.
                             $personToEdit = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType, $id);
-                            process_form($oldName, $personToEdit, "edit");
+                            process_form($newUsername, $personToEdit, "edit");
                             echo ('</div>');
                             //include('footer.inc');
                             echo('</div></body></html>');
