@@ -68,6 +68,7 @@
                 echo("<p>Email: <input type='email' name='email' tabindex='1' value='$currentEmail'></p>");
                 echo("<p>Username: <input type='text' name='username' tabindex='1' value='$currentUsername'></p>");
                 echo("<p>Password: <input type='text' name='password' tabindex='1' placeholder='New Password' value=''></p>");
+                echo("<input type='hidden' name='id' value='$currentId'/>");
             }
         ?>
         <p>Person Type<span style="font-size:x-small;"></span>:
