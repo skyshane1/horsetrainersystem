@@ -301,7 +301,34 @@ button {
                     <td style='border:none;vertical-align:top'>
              <div class='noteswrapper'>
                 <table style='border:none;vertical-align:top;'>
-                        <?php
+                <form method="post">
+                <?php
+                    $curr_allbehaviorsqry="select * from behaviordb;";
+                    $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$_SESSION['curr_horse']."';";
+                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                    $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
+                    while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
+                        $behaviorHash[$row['behaviorTitle']]=1;
+                    }
+                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                        if(isset($behaviorHash[$row['title']])){
+                            echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
+                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                            echo "</td></tr>";
+                        } else {
+                            echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
+                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                            echo "</td></tr>";
+                        }
+                        
+                    }
+                ?>
+                </form>
+               
+               
+               
+               
+               <!--        <?php
                             if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
                                 $_SESSION['curr_horse']=$_GET['curr_horse_button'];
                             }
@@ -318,7 +345,11 @@ button {
 	                	else {
                     			echo '<p>No horse name selected yet lol</p>';
 	                		}
-	                	?>
+	                	?>   
+                -->
+
+
+
                         <tr><td style='text-align:center;'><button class="addBehavior" onclick="addBehavior()">Add Behavior</button></td></tr>
                 </table></div></td>
                 </tr>
