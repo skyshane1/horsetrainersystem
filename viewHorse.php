@@ -30,6 +30,8 @@ function addBehaviorToDB($horseName,$behavior){
     $qry="INSERT INTO `horsetobehaviordb` (`horseName`, `behaviorTitle`) VALUES ('".$horseName."','".$behavior."');";
     return mysqli_query($con,$qry); 
 }
+
+
 ?>
 
 
@@ -163,6 +165,12 @@ button {
     height: 520px;
     width: 360px;
 }
+.behaviorwrapper{ 
+    overflow-y:scroll; 
+    position:relative;
+    height: 520px;
+    width: 140px;
+}
 </style>    
 
 
@@ -283,7 +291,7 @@ button {
                             }
 	                    if (isset($_SESSION['curr_horse'])){
 	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
-                            $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "';";
+                            $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "' order by noteDate DESC;";
                             $curr_fetched=mysqli_query($con,$curr_horse_qry);
 	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
 	                		$hnote = $row['note'];
@@ -299,10 +307,26 @@ button {
                 </table></div></td>
 	
                     <td style='border:none;vertical-align:top'>
-             <div class='noteswrapper'>
+             <div class='behaviorwrapper'>
                 <table style='border:none;vertical-align:top;'>
+                <?php
+                echo '<tr style="width:30%;border:none;"><th>' .$_SESSION['curr_horse'].'\' Behaviors</th></tr>';
+                if (isset($_POST['behaviorChanges'])){
+                    $curr_allbehaviorsqry="select * from behaviordb;";
+                    $wipeBehaviors="delete from horsetobehaviordb where horsename='".$_SESSION['curr_horse']."';";
+                    mysqli_query($con,$wipeBehaviors);
+                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                        if ($_POST[$row['title']]=="on"){
+                            $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$_SESSION['curr_horse']."' ,'".$row['title']."');";
+                            mysqli_query($con,$addBehavior);
+                        }
+                    }
+                }
+                ?>
                 <form method="post">
                 <?php
+
                     $curr_allbehaviorsqry="select * from behaviordb;";
                     $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$_SESSION['curr_horse']."';";
                     $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
@@ -320,37 +344,10 @@ button {
                             echo "<label for='".$row['title']."'>".$row['title']."</label>";
                             echo "</td></tr>";
                         }
-                        
                     }
+                    echo "<tr><td style='border:none'><input type='submit' name='behaviorChanges' value='Confirm Changes' style='border:none'/></td></tr>"
                 ?>
                 </form>
-               
-               
-               
-               
-               <!--        <?php
-                            if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
-                                $_SESSION['curr_horse']=$_GET['curr_horse_button'];
-                            }
-	                    if (isset($_SESSION['curr_horse'])){
-	                        echo '<tr style="width:30%;border:none;"><th>Viewing behaviours of ' .$_SESSION['curr_horse']. '</th></tr>';
-                            $curr_horse_qry="Select * from horsetobehaviordb where horseName = '" .($_SESSION['curr_horse']). "';";
-                            $curr_fetched=mysqli_query($con,$curr_horse_qry);
-	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
-	                		$hbehavior = $row['behaviorTitle'];
-	                		echo "<tr><td> ".$hbehavior. " ";
-	                		
-	                	}
-	                	} 
-	                	else {
-                    			echo '<p>No horse name selected yet lol</p>';
-	                		}
-	                	?>   
-                -->
-
-
-
-                        <tr><td style='text-align:center;'><button class="addBehavior" onclick="addBehavior()">Add Behavior</button></td></tr>
                 </table></div></td>
                 </tr>
             </table>
