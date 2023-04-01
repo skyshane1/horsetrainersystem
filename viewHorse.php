@@ -317,7 +317,7 @@ button {
                     mysqli_query($con,$wipeBehaviors);
                     $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
                     while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                        if ($_POST[$row['title']]=="on"){
+                        if (isset($_POST[$row['title']]) && $_POST[$row['title']]=="on"){
                             $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$_SESSION['curr_horse']."' ,'".$row['title']."');";
                             mysqli_query($con,$addBehavior);
                         }
