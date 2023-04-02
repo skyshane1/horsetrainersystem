@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['destroySession'])) {
     session_destroy();
 }
 if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
-    header('Location: login_form.php');
+    echo'<script> location.replace("login_form.php"); </script>';
 }
 ?>
 <!DOCTYPE html>
@@ -49,8 +49,10 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
                 echo('<a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>');
             } else if ($_SESSION['access_level'] == 1) {
                 echo('<a href="personActions.php?formAction=editPerson"><u>Edit Account</u></a>');
+            }
+            if ($_SESSION['access_level'] == 2) {
+                echo('<a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
             } ?>
-            <a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>
         </div>
     </div>
     <a href="logout.php" class="hlink" style="float:right">Logout</a>

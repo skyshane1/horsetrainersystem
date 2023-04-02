@@ -56,147 +56,37 @@ function cancelNote(){
 
 
 <html>
-<style>
-html{
-    height: 100%;
-}
-table, tr, td{
-        border: 2px solid black;
-        border-radius: 10px;
-    }
-.horsebutton:hover {
-    background-color: #900C3F;
-    color: #FFFFFF;
-}
-button {    
-    background-color:white;
-    color:black; 
-    border:none;
-}
-.headerbutton:hover {
-	background-color: #581845;
-    color: #FFFFFF;
-}
-.horsebutton {
-    border:none;
-    background-color: transparent;
-    color: #FFFFFF;
-    font-size: 100%;
-
-}
-.trodd {
-    background-color:#71F8A6;
-    color: black;
-}
-.treven {
-    background-color:#25663E;
-    color: white;
-}
-.split {
-  height: 100%;
-  width: 65%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: lock;
-  padding-top: 60px;
-}
-
-/* Control the left side */
-.left {
-  left: 25;
-}
-
-/* Control the right side */
-.right {
-  right: 35;
-}
-
-/* If you want the content centered horizontally and vertically */
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.addNote {
-    text-align: center;
-    border-radius: 16px;  /*remember this!! */
-}
-
-.addNote:hover{
-    color:white;
-    background-color: navy;
-}
-.addBehavior {
-    text-align: center;
-    border-radius: 16px;  /*remember this!! */
-}
-.addBehavior:hover{
-    color:white;
-    background-color: navy;
-}
-
-.form-popup {
-    display:none;
-    position: fixed;
-    bottom: 0;
-    right: 15px;
-    border: 3px solid black;
-    z-index: 9;
-}
-
-.form-container {
-    max-width: 300px;
-    padding: 10px;
-    background-color: white;
-}   
-
-.noteswrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-}
-.sortwrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-    width: 360px;
-}
-.behaviorwrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-    width: 140px;
-}
-</style>    
-
-
-    <header style='text-align:center'>
-        <h1>View Horses</h1>
-    </header>
-    <body>
-        <div class="split left">   
-            <div class="search-container">
-                <form method='get'>
-                    <input type="text" placeholder="Search." name="search">
-                    <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
-                </form>
+    <head>
+        <title>
+            View Horse
+        </title>
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
+    </head>
+    <?PHP
+        include_once('header.php');
+    ?>
+    <div class="content">
+        <p><strong>Search For Horse</strong></p>
+        <p>Enter a horses name and press enter or the submit button to submit</p>
+        <p>Clicking on a horses name will open their profile</p>
+        <p>Clicking the header tabs will reverse sort the table</p>
+        <form method='get'>
+            <h2>Search Horse</h2>
+            <div class="flex-container">
+                <input type="text" placeholder="Search" name="search">
+                <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
             </div>
-            <div class='sortwrapper'>
-            <table class='sortable' style='text-align:center'>
-                <tr>
-                    <form method='get'>
-                    <th><button type='submit' class='headerbutton' name='order' value='horseName' ><b>Horse Name</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='colorRank' ><b>Rank</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='color' ><b>Color</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='breed' ><b>Breed</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='pastureNum' ><b>Pasture</b></button></th>
-                    </form> 
-                </tr>
-                <?php 
+            <table>
+                <form method='get'>
+                    <tr>
+                        <th><button type='submit' name='order' value='horseName'>Horse Name</button></th>
+                        <th><button type='submit' name='order' value='colorRank'>Rank</button></th>
+                        <th><button type='submit' name='order' value='color'>Color</button></th>
+                        <th><button type='submit' name='order' value='breed'>Breed</button></th>
+                        <th><button type='submit' name='order' value='pastureNum'>Pasture</button></th>
+                    </tr>
+                </form>
+                <?php
                 include_once('database/dbinfo.php');
                 $con=connect();
                 if (isset($_GET['search'])){
@@ -219,7 +109,8 @@ button {
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
-                    echo '<td><button type="submit" class="horsebutton" name="curr_horse_button" value='.$horseName.'>'.$horseName.'</button&nbsp;</td>'; 
+                    echo '<td><input type="submit" style="background-color: #313131;
+    color: #f8f8f8; margin: 0; border-radius: 0;" name="selectedHorse" value='.$horseName.'></input&nbsp;</td>';
                     echo '<td>'.$horseRank.'&nbsp;</td>';
                     echo '<td>'.$horseColor.'&nbsp;</td>';
                     echo '<td>'.$horseBreed.'&nbsp;</td>';
@@ -245,8 +136,9 @@ button {
                     $_POST['behavior']=NULL;
                 }
                 ?>
-            </table></div>
-        </div>
+            </table>
+        </form>
+    </div>
                 
             <!-- Add Note -->
             <div class="form-popup" id="addNote">
@@ -358,5 +250,6 @@ button {
 
             <p>Viewing the behaviors and comments on horses here</p>
         </div>
+    </div>
     </body>
 </html>

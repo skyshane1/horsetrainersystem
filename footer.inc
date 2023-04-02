@@ -1,3 +1,3 @@
 <footer>
-  <p>&copy; 2023 My Website</p>
+  <p>&copy; 2023 Central Virginia Horse Rescue</p>
 </footer>
