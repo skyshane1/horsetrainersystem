@@ -61,12 +61,15 @@
 </head>
 
 <body>
-
-<div id="container">
-    <?PHP include('header.php'); ?>
-    <center>
+<?PHP include('header.php'); ?>
+<div class="content">
+    <?PHP
+    echo("<p><strong>Edit " . $horseName . "'s Information</strong></p>");
+    echo("<p>Edit " . $horseName . "'s information as you wish. If you do not wish to change any information, please leave the fields untouched.</p>");
+    echo("<p>When finished, hit <b>Edit " . $horseName . "</b> at the bottom of this page.</p>");
+    echo("<p>(<span style='font-size:x-small;'>*</span> denotes required information).</p>"); ?>
         <form action="updateHorse.php" method="post">
-
+            <h2>Edit Horse</h2>
         Old Name: <input type="text" name="oldName" required> <br><br>
 
         New Name: <input type="text" name="horseName" required> <br><br>
@@ -82,7 +85,6 @@
         <input type="submit" name="update" value="Update Data">
 
         </form>
-    </center>
     
 </div>
 </body>

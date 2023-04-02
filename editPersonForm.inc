@@ -35,9 +35,12 @@
     <?PHP
         //If the user is editing an existing person, pass the existing name in "oldName" back to "personEdit.php" for editing purposes.
         echo("<input type='hidden' name='oldName' value='$oldName'/>");
-
+        if($formAction == "addPerson"){
+            echo('<h2>Add Trainer</h2>');
+        } else {
+            echo('<h2>Edit Account</h2>');
+        }
     ?>
-    <h2>Edit Account</h2>
     <fieldset>
         <?php
             if($formAction == "addPerson" || $formAction == "confirmAdd"){
