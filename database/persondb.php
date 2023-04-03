@@ -207,7 +207,7 @@ function filter_persondb($name) {
 
     //Create a connection and retrieve all the people information.
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE (lower(firstName) LIKE '%" . $name ."%') ORDER BY lastName, firstName;";
+    $query = "SELECT * FROM persondb WHERE (lower(lastName) LIKE '%" . $name ."%') ORDER BY lastName, firstName;";
     $result = mysqli_query($con,$query);
     
 

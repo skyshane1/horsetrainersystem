@@ -182,7 +182,7 @@ function process_form($name, $person, $action) {
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>");
-                        
+                     	if($allPersons!=0){   
                         for($x = 0; $x < count($allPersons); $x++) {
                             echo("<tr>
                                     <td> " . $allPersons[$x]->get_firstName() . " </td>
@@ -191,7 +191,12 @@ function process_form($name, $person, $action) {
                                     <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                     <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
                                 </tr>");
-                    }
+			}
+			}
+			else{
+				echo("No Trainers Match Your Search");
+			}
+
                     
                     echo("</table>");  
                     }
