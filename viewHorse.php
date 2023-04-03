@@ -31,7 +31,7 @@ function addBehaviorToDB($horseName,$behavior){
     return mysqli_query($con,$qry); 
 }
 
-
+$selectedHorse = $_GET["selectedHorse"];
 ?>
 
 
@@ -56,147 +56,40 @@ function cancelNote(){
 
 
 <html>
-<style>
-html{
-    height: 100%;
-}
-table, tr, td{
-        border: 2px solid black;
-        border-radius: 10px;
-    }
-.horsebutton:hover {
-    background-color: #900C3F;
-    color: #FFFFFF;
-}
-button {    
-    background-color:white;
-    color:black; 
-    border:none;
-}
-.headerbutton:hover {
-	background-color: #581845;
-    color: #FFFFFF;
-}
-.horsebutton {
-    border:none;
-    background-color: transparent;
-    color: #FFFFFF;
-    font-size: 100%;
-
-}
-.trodd {
-    background-color:#71F8A6;
-    color: black;
-}
-.treven {
-    background-color:#25663E;
-    color: white;
-}
-.split {
-  height: 100%;
-  width: 65%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: lock;
-  padding-top: 60px;
-}
-
-/* Control the left side */
-.left {
-  left: 25;
-}
-
-/* Control the right side */
-.right {
-  right: 35;
-}
-
-/* If you want the content centered horizontally and vertically */
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.addNote {
-    text-align: center;
-    border-radius: 16px;  /*remember this!! */
-}
-
-.addNote:hover{
-    color:white;
-    background-color: navy;
-}
-.addBehavior {
-    text-align: center;
-    border-radius: 16px;  /*remember this!! */
-}
-.addBehavior:hover{
-    color:white;
-    background-color: navy;
-}
-
-.form-popup {
-    display:none;
-    position: fixed;
-    bottom: 0;
-    right: 15px;
-    border: 3px solid black;
-    z-index: 9;
-}
-
-.form-container {
-    max-width: 300px;
-    padding: 10px;
-    background-color: white;
-}   
-
-.noteswrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-}
-.sortwrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-    width: 360px;
-}
-.behaviorwrapper{ 
-    overflow-y:scroll; 
-    position:relative;
-    height: 520px;
-    width: 140px;
-}
-</style>    
-
-
-    <header style='text-align:center'>
-        <h1>View Horses</h1>
-    </header>
-    <body>
-        <div class="split left">   
-            <div class="search-container">
-                <form method='get'>
-                    <input type="text" placeholder="Search." name="search">
-                    <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
-                </form>
+    <head>
+        <title>
+            View Horse
+        </title>
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
+    </head>
+    <?PHP
+        include_once('header.php');
+        include_once('database/dbinfo.php');
+        $con = connect();
+    ?>
+    <div class="content">
+        <?PHP if ($selectedHorse == null){ ?>
+        <p><strong>Search For Horse</strong></p>
+        <p>Enter a horses name and press enter or the submit button to submit</p>
+        <p>Clicking on a horses name will open their profile</p>
+        <p>Clicking the header tabs will reverse sort the table</p>
+        <form method='post'>
+            <h2>Search Horse</h2>
+            <div class="flex-container">
+                <input type="text" placeholder="Search" name="search">
+                <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
             </div>
-            <div class='sortwrapper'>
-            <table class='sortable' style='text-align:center'>
-                <tr>
-                    <form method='get'>
-                    <th><button type='submit' class='headerbutton' name='order' value='horseName' ><b>Horse Name</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='colorRank' ><b>Rank</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='color' ><b>Color</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='breed' ><b>Breed</b></button></th>
-                    <th><button type='submit' class='headerbutton' name='order' value='pastureNum' ><b>Pasture</b></button></th>
-                    </form> 
-                </tr>
-                <?php 
+            <table>
+                <form method='get'>
+                    <tr>
+                        <th><button type='submit' name='order' value='horseName'>Horse Name</button></th>
+                        <th><button type='submit' name='order' value='colorRank'>Rank</button></th>
+                        <th><button type='submit' name='order' value='color'>Color</button></th>
+                        <th><button type='submit' name='order' value='breed'>Breed</button></th>
+                        <th><button type='submit' name='order' value='pastureNum'>Pasture</button></th>
+                    </tr>
+                </form>
+                <?php
                 include_once('database/dbinfo.php');
                 $con=connect();
                 if (isset($_GET['search'])){
@@ -219,7 +112,8 @@ button {
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
-                    echo '<td><button type="submit" class="horsebutton" name="curr_horse_button" value='.$horseName.'>'.$horseName.'</button&nbsp;</td>'; 
+                    echo '<td><input type="submit" style="background-color: #313131;
+    color: #f8f8f8; margin: 0; border-radius: 0;" name="selectedHorse" value='.$horseName.'></input&nbsp;</td>';
                     echo '<td>'.$horseRank.'&nbsp;</td>';
                     echo '<td>'.$horseColor.'&nbsp;</td>';
                     echo '<td>'.$horseBreed.'&nbsp;</td>';
@@ -245,9 +139,85 @@ button {
                     $_POST['behavior']=NULL;
                 }
                 ?>
-            </table></div>
-        </div>
-                
+            </table>
+        </form>
+        <?PHP } else if($selectedHorse != null){ ?>
+        <div>
+            <table>
+                <tr>
+                    <th>
+                        Notes
+                    </th>
+                    <th>
+                        Behaviors
+                    </th>
+                </tr>
+                <tr><td>
+                        <div>
+                            <table>
+                                <?php
+                                if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                                    $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+                                }
+                                echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$selectedHorse. '</th></tr>';
+                                $curr_horse_qry="Select * from notesdb where horseName = '" .$selectedHorse. "' order by noteDate DESC;";
+                                $curr_fetched=mysqli_query($con,$curr_horse_qry);
+                                while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+                                    $hnote = $row['note'];
+                                    echo "<tr><td> ".$hnote. " ";
+                                    echo "<br>" .$row['trainerName']." ".$row['noteDate']."</td></tr></div>";
+                                }
+
+                                ?>
+                                <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
+                            </table></div></td>
+
+                    <td>
+                        <div>
+                            <table>
+                                <?php
+                                echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
+                                if (isset($_POST['behaviorChanges'])){
+                                    $curr_allbehaviorsqry="select * from behaviordb;";
+                                    $wipeBehaviors="delete from horsetobehaviordb where horsename='".$selectedHorse."';";
+                                    mysqli_query($con,$wipeBehaviors);
+                                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                                        if ($_POST[$row['title']]=="on"){
+                                            $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$selectedHorse."' ,'".$row['title']."');";
+                                            mysqli_query($con,$addBehavior);
+                                        }
+                                    }
+                                }
+                                ?>
+                                <form method="post">
+                                    <?php
+
+                                    $curr_allbehaviorsqry="select * from behaviordb;";
+                                    $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$selectedHorse."';";
+                                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                                    $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
+                                    while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
+                                        $behaviorHash[$row['behaviorTitle']]=1;
+                                    }
+                                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                                        if(isset($behaviorHash[$row['title']])){
+                                            echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
+                                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                                            echo "</td></tr>";
+                                        } else {
+                                            echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
+                                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                                            echo "</td></tr>";
+                                        }
+                                    }
+                                    echo "<tr><td ><input type='submit' name='behaviorChanges' value='Confirm Changes'/></td></tr>"
+                                    ?>
+                                </form>
+                            </table></div></td>
+                </tr>
+            </table>
+            <p>Viewing the behaviors and comments on horses here</p>
             <!-- Add Note -->
             <div class="form-popup" id="addNote">
                 <?php
@@ -258,10 +228,10 @@ button {
                 echo "<button type='submit' class='btn'>Add</button>";
                 echo "<button type='button' class='btn cancel' onclick='cancelNote()'>Close</button>";
                 ?>
-              </form>
+                </form>
             </div>
             <!-- End Add Note -->
-	<div class="form-popup" id="addBehavior">
+            <div class="form-popup" id="addBehavior">
                 <?php
                 echo "<form method='post' action='' class='form-container'>";
                 echo "<h1>Add Behavior</h1>";
@@ -270,93 +240,9 @@ button {
                 echo "<button type='submit' class='btn'>Add</button>";
                 echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
                 ?>
-              </form>
-            </div>
-        <div class="split right">
-            <table style="width: 90%; height:70%">
-            <tr>
-                <th style='width:20%; height:10%'>
-                Notes
-                </th>
-                <th style='height:10%'>
-                Behaviors
-                </th>
-            </tr>
-            <tr><td style='border:none;vertical-align:top'>
-             <div class='noteswrapper'>
-                <table style='border:none;vertical-align:top;'>
-                        <?php
-                            if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
-                                $_SESSION['curr_horse']=$_GET['curr_horse_button'];
-                            }
-	                    if (isset($_SESSION['curr_horse'])){
-	                        echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$_SESSION['curr_horse']. '</th></tr>';
-                            $curr_horse_qry="Select * from notesdb where horseName = '" .($_SESSION['curr_horse']). "' order by noteDate DESC;";
-                            $curr_fetched=mysqli_query($con,$curr_horse_qry);
-	                	while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
-	                		$hnote = $row['note'];
-	                		echo "<tr><td> ".$hnote. " ";
-	                		echo "<br>- <font size='1'>" .$row['trainerName']." ".$row['noteDate']."</font></td></tr></div>";
-	                	}
-	                	} 
-	                	else {
-                    			echo '<p>No horse name selected yet lol</p>';
-	                		}
-	                	?>
-                        <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
-                </table></div></td>
-	
-                    <td style='border:none;vertical-align:top'>
-             <div class='behaviorwrapper'>
-                <table style='border:none;vertical-align:top;'>
-                <?php
-                echo '<tr style="width:30%;border:none;"><th>' .$_SESSION['curr_horse'].'\' Behaviors</th></tr>';
-                if (isset($_POST['behaviorChanges'])){
-                    $curr_allbehaviorsqry="select * from behaviordb;";
-                    $wipeBehaviors="delete from horsetobehaviordb where horsename='".$_SESSION['curr_horse']."';";
-                    mysqli_query($con,$wipeBehaviors);
-                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
-                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                        if (isset($_POST[$row['title']]) && $_POST[$row['title']]=="on"){
-                            $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$_SESSION['curr_horse']."' ,'".$row['title']."');";
-                            mysqli_query($con,$addBehavior);
-                        }
-                    }
-                }
-                ?>
-                <form method="post">
-                <?php
-
-                    $curr_allbehaviorsqry="select * from behaviordb;";
-                    $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$_SESSION['curr_horse']."';";
-                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
-                    $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
-                    while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
-                        $behaviorHash[$row['behaviorTitle']]=1;
-                    }
-                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                        if(isset($behaviorHash[$row['title']])){
-                            echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
-                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                            echo "</td></tr>";
-                        } else {
-                            echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
-                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                            echo "</td></tr>";
-                        }
-                    }
-                    echo "<tr><td style='border:none'><input type='submit' name='behaviorChanges' value='Confirm Changes' style='border:none'/></td></tr>"
-                ?>
                 </form>
-                </table></div></td>
-                </tr>
-            </table>
-         
-
-
-         
-
-            <p>Viewing the behaviors and comments on horses here</p>
+            </div>
         </div>
-    </body>
+        <?PHP } ?>
+    </div>
 </html>

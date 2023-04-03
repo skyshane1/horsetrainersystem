@@ -7,12 +7,15 @@
       <title>Add a Horse</title>
    </head>
    <body>
-   <div id="container">
-      <?PHP include('header.php'); ?>
-      <center>
-         <h1>Form to add a Horse</h1>
-         <form action="addHorseResponse.php" method="post">
+   <?PHP include('header.php'); ?>
+   <div class="content"">
+   <p><strong>Add Horse Information</strong></p>
+   <p>Add horse information using the fields below.</p>
+   <p>When finished, hit <b>Add Horse</b> at the bottom of this page.</p>
+   <p>(<span style='font-size:x-small;'>*</span> denotes required information).</p>
 
+         <form action="addHorseResponse.php" method="post">
+             <h2>Add Horse</h2>
             <p>
                <label for="horseName">Horse Name:</label>
                <input type="text" name="horseName" id="HorseName"> 
@@ -34,7 +37,7 @@
                <input type="text" name="colorRank" id="colorRank"> 
             </p>
          
-         <input type="submit" value="Add a horse!">
+         <input type="submit" value="Add Horse">
 
          </form>
       </center>
