@@ -153,12 +153,28 @@ function process_form($name, $person, $action) {
                     //Else, there are people in the database,
                     else {
 
-                        //so retrieve and show all of the people in a table.
-                        $allPersons = getall_persondb();
 
                         echo("<h2><strong>List of People</strong></h2>");
-                        echo("<br>");
-                        echo("<table>
+			echo("<br>");
+			echo("<form action='personActions.php'>");
+				echo("<input type='hidden' name='formAction' value='searchPeople'>");
+				echo("<input type='text' placeholder='Search for Trainer' name='searchoption'>");
+				echo("<input type='submit' value='Search'>");
+				if (isset($_GET['searchoption'])){
+					$searchValue=$_GET['searchoption'];
+				}
+				
+			echo("</form>");
+			if (empty($searchValue)){	
+				//so retrieve and show all of the people in a table.
+                        	$allPersons = getall_persondb();
+			}
+			else{
+				$allPersons = filter_persondb($searchValue);	
+
+			}
+
+		    echo("<table>
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
@@ -166,7 +182,7 @@ function process_form($name, $person, $action) {
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>");
-                        
+                     	if($allPersons!=0){   
                         for($x = 0; $x < count($allPersons); $x++) {
                             echo("<tr>
                                     <td> " . $allPersons[$x]->get_firstName() . " </td>
@@ -175,7 +191,12 @@ function process_form($name, $person, $action) {
                                     <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                     <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
                                 </tr>");
-                    }
+			}
+			}
+			else{
+				echo("No Trainers Match Your Search");
+			}
+
                     
                     echo("</table>");  
                     }
