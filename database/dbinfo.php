@@ -23,6 +23,11 @@ function connect() {
     $password = "homebasedb";
     $database = "homebasedb";
 
+    if($_SERVER['SERVER_NAME'] == 'jenniferp96.sg-host.com') {
+        $username = 'ujei4xxuboteg';
+        $database = 'dbxme0wkzficgl';
+        $password = '%2@2*5qq>$*n';
+    }
     $con = mysqli_connect($host, $username, $password, $database);
     if (!$con) { 
         echo "not connected to server"; 

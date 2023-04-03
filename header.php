@@ -7,77 +7,55 @@
  * (see <http://www.gnu.org/licenses/ for more information).
  * 
  */
- 
-    echo('<form action="header.php" method="post">');
-    	echo('<input type="submit" name="destroySession" value="Logout" />');
-    echo('</form>');
-
-    if($_SERVER['REQUEST_METHOD'] == "POST" AND ISSET($_POST['destroySession'])){
-    	session_destroy();
-    }
-
-
-
-    if($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1){
-        header('Location: login_form.php');
-    }
-
+if ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['destroySession'])) {
+    session_destroy();
+}
+if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
+    echo'<script> location.replace("login_form.php"); </script>';
+}
 ?>
-<!-- Begin Header -->
-<style type="text/css">
-    h1 {padding-left: 0px; padding-right:165px;}
-</style>
-<div id="header">
-<!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
-<h1><br><br>Homebase <br></h1>-->
-
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="newstyle.css"/>
+</head>
+<div class="container">
+    <a href="index.php" class="hlink">Home</a>
+    <a href="about.php" class="hlink">About</a>
+    <div class="dropdown">
+        <button class="dropbtn">Horse Actions</button>
+        <div class="dropdown-content">
+            <a href="horseActions.php?formAction=searchHorse"><u>Search Horse</u></a>
+            <a href="addHorseForm.php"><u>Add Horse</u></a>
+            <a href="updateHorse.php"><u>Update Horse</u></a>
+            <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Behavior Actions</button>
+        <div class="dropdown-content">
+            <a href="behaviorActions.php?formAction=searchBehavior"><u>Search Behaviors</u></a>
+            <a href="addBehaviorForm.php"><u>Add Behavior</u></a>
+            <a href="behaviorActions.php?formAction=selectBehavior"><u>Edit Behavior</u></a>
+            <a href="behaviorActions.php?formAction=removeBehavior"><u>Remove Behavior</u></a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Trainer Actions</button>
+        <div class="dropdown-content">
+            <a href="personActions.php?formAction=searchPeople"><u>Search Trainers</u></a>
+            <a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>
+            <?php if ($_SESSION['access_level'] == 2) {
+                echo('<a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>');
+            } else if ($_SESSION['access_level'] == 1) {
+                echo('<a href="personActions.php?formAction=editPerson"><u>Edit Account</u></a>');
+            }
+            if ($_SESSION['access_level'] == 2) {
+                echo('<a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
+            } ?>
+        </div>
+    </div>
+    <a href="logout.php" class="hlink" style="float:right">Logout</a>
 </div>
+</html>
 
-<div align="center" id="navigationLinks">
-    <?PHP    
-        echo("<br><b>"."CVHR Horse Training Management System"."</b> ");
-        echo('<br><br>');
-        echo('<a href="index.php">home</a>');
-        echo(' | <a href="about.php">about</a>');
-        echo('</br>');
-        //echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK">help</a>');
-        //echo(' | calendars: <a href="' . $path . 'calendar.php?venue=portland'.''.'">Portland, </a>');
-        //echo(' <a href="' . $path . 'calendar.php?venue=bangor'.''.'">Bangor</a>');
-        //echo('<br>master schedules: <a href="' . $path . 'viewSchedule.php?venue=portland'."".'">Portland, </a>');
-        //echo('<a href="' . $path . 'viewSchedule.php?venue=bangor'."".'">Bangor</a>');
-        echo('<br>');
-        echo('<strong>Horse Actions</strong>| 
-                        <a href="viewHorse.php"><u>Search Horse</u></a>,
-                        <a href="addHorseForm.php"><u>Add Horse</u></a>, 
-                        <a href="updateHorse.php"><u>Update Horse</u></a>,
-                        <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>');
-        echo('<br><br>');
-        echo('<strong>Behavior Actions</strong> | 
-                        <a href="behaviorActions.php?formAction=searchBehavior"><u>Search Behaviors</u></a>, 
-                        <a href="addBehaviorForm.php"><u>Add Behavior</u></a>, 
-                        <a href="behaviorActions.php?formAction=selectBehavior"><u>Edit Behavior</u></a>,
-                        <a href="behaviorActions.php?formAction=removeBehavior"><u>Remove Behavior</u></a>');
-        echo('<br><br>');
-        echo('<strong>Trainer Actions</strong> | 
-                        <a href="personActions.php?formAction=searchPeople"><u>Search Trainers</u></a>, 
-                        <a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>, 
-                        <a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>,
-                        <a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
-        echo("<br><br>");
-
-        echo("_______________________________________________________________________________________________________________________________________");
-        echo("<br><br>");
-        echo('<strong>Notes Actions</strong> (links later!) | 
-                        <a><u>Search Training Notes</u></a>, 
-                        <a><u>Add Training Notes</u></a>, 
-                        <a><u>Edit Training Notes</u></a>,
-                        <a><u>Remove Training Notes</u></a>');
-        echo("<br><br>");
-        echo('<strong>Management Actions</strong> (links later!) | 
-                        <a><u>Assign Trainer</u></a>, 
-                        <a><u>Unassign Trainer</u></a>, 
-                        <a><u>Assign Behavior</u></a>,
-                        <a><u>Unassign Behavior</u></a>');
-    ?>
-</div>
-<!-- End Header -->

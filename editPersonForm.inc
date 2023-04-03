@@ -6,18 +6,16 @@
  
 ?>
 
-
-<?php
+    <?php
 
     //Display the form instructions based on what the user wants to do.
     //Also, change the form's destination URL based on what the user wants to do.
     if($formAction == "addPerson" || $formAction == "confirmAdd") {
-
         echo("<p><strong>Add Person Information</strong></p>");
         echo("<p>Add person information using the fields below.</p>");
         echo("<p>When finished, hit <b>Add Person</b> at the bottom of this page.</p>");
-        echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
-       
+        echo("<p>(<span style='font-size:x-small;'>*</span> denotes required information).</p>");
+
         echo("<form method='POST' action='personActions.php?formAction=confirmAdd'>");
     }
     else { //$formAction = 'editPerson' or 'confirmEdit'
@@ -25,30 +23,34 @@
         echo("<p><strong>Edit " . $oldName . "'s Information</strong></p>");
         echo("<p>Edit " . $oldName . "'s information as you wish. If you do not wish to change any information, please leave the fields untouched.</p>");
         echo("<p>When finished, hit <b>Edit " . $oldName . "</b> at the bottom of this page.</p>");
-        echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
+        echo("<p>(<span style='font-size:x-small;'>*</span> denotes required information).</p>");
 
         echo("<form method='POST' action='personActions.php?formAction=confirmEdit'>");
     }
-?>
+    ?>
+
     <input type="hidden" name="old_name" value="new">
     <input type="hidden" name="_form_submit" value="1">
 
     <?PHP
         //If the user is editing an existing person, pass the existing name in "oldName" back to "personEdit.php" for editing purposes.
         echo("<input type='hidden' name='oldName' value='$oldName'/>");
-
+        if($formAction == "addPerson"){
+            echo('<h2>Add Trainer</h2>');
+        } else {
+            echo('<h2>Edit Account</h2>');
+        }
     ?>
     <fieldset>
-        <legend>Person Information:</legend>
         <?php
             if($formAction == "addPerson" || $formAction == "confirmAdd"){
                 //leave the fields blank
-                echo("<p>First Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='firstName' tabindex='1' value=''></p>");
-                echo("<p>Last Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='lastName' tabindex='1' value=''></p>");
+                echo("<p>First Name<span style='font-size:x-small;'>*</span>: <input type='text' name='firstName' tabindex='1' value=''></p>");
+                echo("<p>Last Name<span style='font-size:x-small;'>*</span>: <input type='text' name='lastName' tabindex='1' value=''></p>");
                 echo("<p>Phone Number (###-###-####): <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' tabindex='1' value=''></p>"); //Add "required" after "pattern" later!
                 echo("<p>Email: <input type='email' name='email' tabindex='1' value=''></p>");
-                echo("<p>Username<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='userName' tabindex='1' value=''></p>");
-                echo("<p>Password<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='password' tabindex='1' value=''></p>");
+                echo("<p>Username<span style='font-size:x-small;'>*</span>: <input type='text' name='userName' tabindex='1' value=''></p>");
+                echo("<p>Password<span style='font-size:x-small;'>*</span>: <input type='text' name='password' tabindex='1' value=''></p>");
                 
             //editing a person
             } 
@@ -63,17 +65,16 @@
                 $currentPassword = $personToEdit->get_pass();
                 $currentId = $personToEdit->get_id();
 
-                echo("<p>First Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='firstName' tabindex='1' value='$currentFirstName'></p>");
-                echo("<p>Last Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='lastName' tabindex='1' value='$currentLastName'></p>");
+                echo("<p>First Name<span style='font-size:x-small;color:'>*</span>: <input type='text' name='firstName' tabindex='1' value='$currentFirstName'></p>");
+                echo("<p>Last Name<span style='font-size:x-small;color:'>*</span>: <input type='text' name='lastName' tabindex='1' value='$currentLastName'></p>");
                 echo("<p>Phone Number (###-###-####): <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' tabindex='1' value='$currentPhone'></p>"); //Add "required" after "pattern" later!
                 echo("<p>Email: <input type='email' name='email' tabindex='1' value='$currentEmail'></p>");
                 echo("<p>Username: <input type='text' name='username' tabindex='1' value='$currentUsername'></p>");
                 echo("<p>Password: <input type='text' name='password' tabindex='1' placeholder='New Password' value=''></p>");
-                echo("<p>ID: <input type='text' name='id' tabindex='1' value='$currentId'></p>");
-
+                echo("<input type='hidden' name='id' value='$currentId'/>");
             }
         ?>
-        <p>Person Type<span style="font-size:x-small;color:FF0000"></span>:
+        <p>Person Type<span style="font-size:x-small;"></span>:
             <select name="userType" tabindex="1">
                 <?PHP
                 
@@ -110,7 +111,6 @@
         <script src="lib/>jquery-1.9.1.js"></script>
         <script src="lib/>jquery-ui.js"></script>
     </fieldset>
-    <br>
     <?PHP
 
         //Display the appropriate submit button text based on what the user wants to do.

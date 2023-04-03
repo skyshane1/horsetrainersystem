@@ -87,22 +87,11 @@ function edit_person($name, $person) {
                                   pass='" . $person->get_pass() . "', 
                                   userType='" . $person->get_userType() . "'
                                   WHERE id='" . $person->get_id() . "';";
-
     $result = mysqli_query($con,$query);
-    
     //Close the connection and return true.
     mysqli_close($con);
     return true;
 }
-
-function edit_password($name, $hash) {
-    $con=connect();
-    $query = "UPDATE persondb SET pass ='".$hash."'  WHERE username ='" .$name."'";
-
-    $result = mysqli_query($con, $query);
-    mysqli_close($con);
-}
-
 
 /*
  * Function name: remove_person($personName)
