@@ -16,7 +16,7 @@
         echo('<p>When finished, hit <b>"Add Horse"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/horseActions.php?formAction=confirmAdd'>");
+        echo("<form method='POST' action='/horsetrainersystem/horseActions.php?formAction=confirmAdd'>");
     }
     else { //$formAction == "editHorse" or "confirmEdit"
 
@@ -26,7 +26,7 @@
         echo('<p>When finished, hit <b>"Edit ' . $oldName . '"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
 
-        echo("<form method='POST' action='/Horse/horseActions.php?formAction=confirmEdit'>");
+        echo("<form method='POST' action='/horsetrainersystem/horseActions.php?formAction=confirmEdit'>");
     }
 ?>
     <input type="hidden" name="old_name" value="new">

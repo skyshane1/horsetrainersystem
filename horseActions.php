@@ -291,7 +291,7 @@ function process_form($name, $horse, $action) {
 
                     //Else, the form has been submitted,
                     else {
-
+                        $horse = NULL;
                         //so validate it. BTW, the parameter doesn't matter, because "validate_form" uses the form's $_POST values, NOT the parameter.
                         $errors = validate_form($horse);
 

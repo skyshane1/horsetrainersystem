@@ -25,7 +25,7 @@
         echo('<p>When finished, hit <b>"Add Behavior"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/behaviorActions.php?formAction=confirmAdd'>");
+        echo("<form method='POST' action='/horsetrainersystem/behaviorActions.php?formAction=confirmAdd'>");
     }
     else { //$formAction == "editBehavior"
 
@@ -35,7 +35,7 @@
         echo('<p>When finished, hit <b>"Edit ' . $oldTitle . '"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
 
-        echo("<form method='POST' action='/Horse/behaviorActions.php?formAction=confirmEdit'>");
+        echo("<form method='POST' action='/horsetrainersystem/behaviorActions.php?formAction=confirmEdit'>");
     }
 ?>
     <input type="hidden" name="old_name" value="new">
