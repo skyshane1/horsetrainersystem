@@ -68,7 +68,7 @@ function cancelNote(){
         $con = connect();
     ?>
     <div class="content">
-        <?PHP if ($selectedHorse == null){ ?>
+        <?PHP if ($selectedHorse == ''){ ?>
         <p><strong>Search For Horse</strong></p>
         <p>Enter a horses name and press enter or the submit button to submit</p>
         <p>Clicking on a horses name will open their profile</p>
@@ -142,82 +142,72 @@ function cancelNote(){
             </table>
         </form>
         <?PHP } else if($selectedHorse != null){ ?>
-        <div>
-            <table>
-                <tr>
-                    <th>
-                        Notes
-                    </th>
-                    <th>
-                        Behaviors
-                    </th>
-                </tr>
-                <tr><td>
-                        <div>
-                            <table>
-                                <?php
-                                if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
-                                    $_SESSION['curr_horse']=$_GET['curr_horse_button'];
-                                }
-                                echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$selectedHorse. '</th></tr>';
-                                $curr_horse_qry="Select * from notesdb where horseName = '" .$selectedHorse. "' order by noteDate DESC;";
-                                $curr_fetched=mysqli_query($con,$curr_horse_qry);
-                                while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
-                                    $hnote = $row['note'];
-                                    echo "<tr><td> ".$hnote. " ";
-                                    echo "<br>" .$row['trainerName']." ".$row['noteDate']."</td></tr></div>";
-                                }
+            <?PHP echo('<h2>'.$selectedHorse.'</h2>');?>
+            <div class="flex-container">
+                <!-- View Notes Table -->
+                <table>
+                    <?php
+                    if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
+                        $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+                    }
+                    echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$selectedHorse. '</th></tr>';
+                    $curr_horse_qry="Select * from notesdb where horseName = '" .$selectedHorse. "' order by noteDate DESC;";
+                    $curr_fetched=mysqli_query($con,$curr_horse_qry);
+                    while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
+                        $curr_trainer_qry="Select * from persondb where id = '" .$row['trainerId']. "';";
+                        $curr_trainer=mysqli_query($con, $curr_trainer_qry);
+                        $trainer_id = mysqli_fetch_array($curr_trainer, MYSQLI_ASSOC);
+                        $hnote = $row['note'];
+                        echo "<tr><td> ".$hnote. " ";
+                        echo "<br>" .$trainer_id['fullName']." ".$row['noteDate']."</td></tr></div>";
+                    }
 
-                                ?>
-                                <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
-                            </table></div></td>
+                    ?>
+                    <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
+                </table>
+                <!-- View Behaviors Table -->
+                <table>
+                    <?php
+                    echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
+                    if (isset($_POST['behaviorChanges'])){
+                        $curr_allbehaviorsqry="select * from behaviordb;";
+                        $wipeBehaviors="delete from horsetobehaviordb where horsename='".$selectedHorse."';";
+                        mysqli_query($con,$wipeBehaviors);
+                        $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                        while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                            if ($_POST[$row['title']]=="on"){
+                                $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$selectedHorse."' ,'".$row['title']."');";
+                                mysqli_query($con,$addBehavior);
+                            }
+                        }
+                    }
+                    ?>
+                    <form method="post">
+                        <?php
 
-                    <td>
-                        <div>
-                            <table>
-                                <?php
-                                echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
-                                if (isset($_POST['behaviorChanges'])){
-                                    $curr_allbehaviorsqry="select * from behaviordb;";
-                                    $wipeBehaviors="delete from horsetobehaviordb where horsename='".$selectedHorse."';";
-                                    mysqli_query($con,$wipeBehaviors);
-                                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
-                                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                                        if ($_POST[$row['title']]=="on"){
-                                            $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$selectedHorse."' ,'".$row['title']."');";
-                                            mysqli_query($con,$addBehavior);
-                                        }
-                                    }
-                                }
-                                ?>
-                                <form method="post">
-                                    <?php
-
-                                    $curr_allbehaviorsqry="select * from behaviordb;";
-                                    $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$selectedHorse."';";
-                                    $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
-                                    $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
-                                    while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
-                                        $behaviorHash[$row['behaviorTitle']]=1;
-                                    }
-                                    while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                                        if(isset($behaviorHash[$row['title']])){
-                                            echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
-                                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                            echo "</td></tr>";
-                                        } else {
-                                            echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
-                                            echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                            echo "</td></tr>";
-                                        }
-                                    }
-                                    echo "<tr><td ><input type='submit' name='behaviorChanges' value='Confirm Changes'/></td></tr>"
-                                    ?>
-                                </form>
-                            </table></div></td>
-                </tr>
-            </table>
-            <p>Viewing the behaviors and comments on horses here</p>
+                        $curr_allbehaviorsqry="select * from behaviordb;";
+                        $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$selectedHorse."';";
+                        $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                        $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
+                        while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
+                            $behaviorHash[$row['behaviorTitle']]=1;
+                        }
+                        while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                            if(isset($behaviorHash[$row['title']])){
+                                echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
+                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                                echo "</td></tr>";
+                            } else {
+                                echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
+                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
+                                echo "</td></tr>";
+                            }
+                        }
+                        echo "<tr><td ><input type='submit' name='behaviorChanges' value='Confirm Changes'/></td></tr>"
+                        ?>
+                    </form>
+                </table>
+            </div>
             <!-- Add Note -->
             <div class="form-popup" id="addNote">
                 <?php
