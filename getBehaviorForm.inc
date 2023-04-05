@@ -9,7 +9,7 @@
         echo("<p>When finished, hit <b>Select Behavior</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/behaviorActions.php?formAction=editBehavior'>");
+        echo("<form method='POST' action='behaviorActions.php?formAction=editBehavior'>");
     }
     else {
 
@@ -18,7 +18,7 @@
         echo("<p>When finished, hit <b>Remove Behavior</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/Horse/behaviorActions.php?formAction=confirmRemove'>");
+        echo("<form method='POST' action='behaviorActions.php?formAction=confirmRemove'>");
     }
 ?>
 
