@@ -27,6 +27,7 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
         <div class="dropdown-content">
             <a href="horseActions.php?formAction=searchHorse"><u>Search Horse</u></a>
             <a href="horseActions.php?formAction=addHorse"><u>Add Horse</u></a>
+            <a href="viewHorse.php?selectedHorse= "><u>Search Horse</u></a>
             <a href="horseActions.php?formAction=selectHorse"><u>Update Horse</u></a>
             <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>
         </div>
