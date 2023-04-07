@@ -9,9 +9,9 @@
  * 	behaviorEdit.php
  *  oversees the editing of a behavior to be added, edited, or deleted from the database
  */
-
-session_start();
 session_cache_expire(30);
+session_start();
+
 include_once('database/behaviordb.php');
 include_once('database/dbinfo.php');
 include_once('domain/Behavior.php');
