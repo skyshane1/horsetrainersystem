@@ -141,9 +141,36 @@ function cancelNote(){
                 ?>
             </table>
         </form>
-        <?PHP } else if($selectedHorse != null){ ?>
+        <?PHP } else if($selectedHorse != null){?>
             <?PHP echo('<h2>'.$selectedHorse.'</h2>');?>
             <div class="flex-container">
+                <!-- View Horse Info Table -->
+                <?PHP
+                    include_once('database/horsedb.php');
+                    $horseFill = retrieve_horse($selectedHorse);
+                ?>
+                <table>
+                    <tr>
+                        <td>Name</td>
+                        <td><?PHP echo($horseFill->get_horseName()); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Color</td>
+                        <td><?PHP echo($horseFill->get_color()); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Breed</td>
+                        <td><?PHP echo($horseFill->get_breed()); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Pasture</td>
+                        <td><?PHP echo($horseFill->get_pastureNum()); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Rank</td>
+                        <td><?PHP echo($horseFill->get_colorRank()); ?></td>
+                    </tr>
+                </table>
                 <!-- View Notes Table -->
                 <table>
                     <?php
