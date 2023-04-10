@@ -22,7 +22,7 @@ function orderBy($in){
 
 function addNoteToDB($horseName,$note,$date,$time){
     $con=connect();
-    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerName`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', 'admin');";
+    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['ID']."');";
     return mysqli_query($con,$qry); 
 }
 
@@ -125,19 +125,6 @@ function cancelNote(){
 
                 }
                 echo '</form>';
-
-                if (isset($_POST['note'])){
-                    $note=$_POST['note'];
-                    $date=date("Y-m-d");
-                    $time=date("Y-m-d H:i:s");
-                    addNoteToDB($_SESSION['curr_horse'],$note,$date,$time);
-                    $_POST['note']=NULL;
-                }
-		if (isset($_POST['behavior'])){
-                    $behavior=$_POST['behavior'];
-                    addBehaviorToDB($_SESSION['curr_horse'],$behavior);
-                    $_POST['behavior']=NULL;
-                }
                 ?>
             </table>
         </form>
@@ -146,6 +133,18 @@ function cancelNote(){
                 <?PHP
                     include_once('database/horsedb.php');
                     $horseFill = retrieve_horse($selectedHorse);
+                    if (isset($_POST['note'])){
+                        $note=$_POST['note'];
+                        $date=date("Y-m-d");
+                        $time=date("Y-m-d H:i:s");
+                        addNoteToDB($_SESSION['curr_horse'],$note,$date,$time);
+                        $_POST['note']=NULL;
+                    }
+                    if (isset($_POST['behavior'])){
+                        $behavior=$_POST['behavior'];
+                        addBehaviorToDB($_SESSION['curr_horse'],$behavior);
+                        $_POST['behavior']=NULL;
+                    }
                 ?>
                 <table class="horseinfo">
                     <tr>
@@ -202,11 +201,12 @@ function cancelNote(){
                     echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
                     if (isset($_POST['behaviorChanges'])){
                         $curr_allbehaviorsqry="select * from behaviordb;";
-                        $wipeBehaviors="delete from horsetobehaviordb where horsename='".$selectedHorse."';";
+                        $wipeBehaviors="delete from horsetobehaviordb where horseName='".$selectedHorse."';";
                         mysqli_query($con,$wipeBehaviors);
                         $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
                         while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                            if ($_POST[$row['title']]=="on"){
+                            $tempname=str_replace(" ","_",$row['title']);
+                            if ($_POST[$tempname]=="on"){
                                 $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$selectedHorse."' ,'".$row['title']."');";
                                 mysqli_query($con,$addBehavior);
                             }
@@ -225,11 +225,13 @@ function cancelNote(){
                         }
                         while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
                             if(isset($behaviorHash[$row['title']])){
-                                echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
+                                $tempname=str_replace(" ","_",$row['title']);
+                                echo "<tr><td style='border:none'><input type='checkbox' checked name='".$tempname."'/>";
                                 echo "<label for='".$row['title']."'>".$row['title']."</label>";
                                 echo "</td></tr>";
                             } else {
-                                echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
+                                $tempname=str_replace(" ","_",$row['title']);
+                                echo "<tr><td style='border:none'><input type='checkbox' name='".$tempname."'/>";
                                 echo "<label for='".$row['title']."'>".$row['title']."</label>";
                                 echo "</td></tr>";
                             }
@@ -247,7 +249,7 @@ function cancelNote(){
                 echo "<label for='Note'><b>Note</b></label>";
                 echo "<input type='text' placeholder='Enter Note' name='note' required>";
                 echo "<button type='submit' class='btn'>Add</button>";
-                echo "<button type='button' class='btn cancel' onclick='cancelNote()'>Close</button>";
+                //echo "<button type='button' class='btn cancel' onclick='cancelNote()'>Close</button>";
                 ?>
                 </form>
             </div>
@@ -259,7 +261,7 @@ function cancelNote(){
                 echo "<label for='Behavior'><b>Behavior</b></label>";
                 echo "<input type='text' placeholder='Enter Behavior' name='behavior' required>";
                 echo "<button type='submit' class='btn'>Add</button>";
-                echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+                //echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
                 ?>
                 </form>
             </div>
