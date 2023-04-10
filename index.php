@@ -27,10 +27,16 @@ session_start();
                 include_once('domain/Horse.php');
                 include_once('database/dbinfo.php');
                 include_once('database/trainertohorsedb.php');
-
                 $horse = retrieve_trainer_horse($_SESSION['ID']);
-
-                echo($horse->get_horseName());
+                if($horse != false){
+                    echo'<script> location.replace("viewHorse.php?selectedHorse='.$horse->get_horseName().'"); </script>';
+                } else {
+                    ?>
+                    <p><strong>Home</strong><br /><br />
+                        You don't currently have any horses to train
+                    </p>
+                <?PHP
+                }
                 date_default_timezone_set('America/New_York');
                 ?>
             </div>

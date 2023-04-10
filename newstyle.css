@@ -79,6 +79,12 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     text-align: center;
 }
 
+.horseinfo {
+    width: 100%;
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
 th, .horseName{
     background-color: #313131;
     color: #f8f8f8;
@@ -109,6 +115,13 @@ td{
 }
 
 tr:nth-child(even) {background-color: #f2f2f2;}
+
+.scroll {
+    overflow-y: scroll;
+    width: 200px;
+    height: 200px;
+    padding: 8px;
+}
 
 button{
     width: 100%;
