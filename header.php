@@ -22,15 +22,20 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
 <div class="container">
     <a href="index.php" class="hlink">Home</a>
     <a href="about.php" class="hlink">About</a>
-    <div class="dropdown">
-        <button class="dropbtn">Horse Actions</button>
-        <div class="dropdown-content">  
-            <a href="viewHorse.php?selectedHorse= "><u>Search Horse</u></a>          
-            <a href="horseActions.php?formAction=addHorse"><u>Add Horse</u></a>
-            <a href="horseActions.php?formAction=selectHorse"><u>Update Horse</u></a>
-            <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>
-        </div>
-    </div>
+    <?php if ($_SESSION['access_level'] == 2) {
+        echo('<div class="dropdown">');
+        echo('<button class="dropbtn">Trainer Actions</button>');
+        echo('<div class="dropdown-content">');
+        echo('<a href="viewHorse.php?selectedHorse= "><u>Search Horse</u></a>');
+        echo('<a href="horseActions.php?formAction=addHorse"><u>Add Horse</u></a>');
+        echo('<a href="horseActions.php?formAction=selectHorse"><u>Update Horse</u></a>');
+        echo('<a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>');
+        echo('</div>');
+        echo('</div>');
+    } else if ($_SESSION['access_level'] == 1) {
+        echo('<a href="viewHorse.php?selectedHorse= " class="hlink">Search Horse</a>');
+    }
+    ?>
     <div class="dropdown">
         <button class="dropbtn">Behavior Actions</button>
         <div class="dropdown-content">
@@ -40,21 +45,20 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
             <a href="behaviorActions.php?formAction=removeBehavior"><u>Remove Behavior</u></a>
         </div>
     </div>
-    <div class="dropdown">
-        <button class="dropbtn">Trainer Actions</button>
-        <div class="dropdown-content">
-            <a href="personActions.php?formAction=searchPeople"><u>Search Trainers</u></a>
-            <a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>
             <?php if ($_SESSION['access_level'] == 2) {
+                echo('<div class="dropdown">');
+                echo('<button class="dropbtn">Trainer Actions</button>');
+                echo('<div class="dropdown-content">');
+                echo('<a href="personActions.php?formAction=addPerson"><u>Add Trainer</u></a>');
                 echo('<a href="personActions.php?formAction=selectPerson"><u>Edit Trainer</u></a>');
-            } else if ($_SESSION['access_level'] == 1) {
-                echo('<a href="personActions.php?formAction=editPerson"><u>Edit Account</u></a>');
-            }
-            if ($_SESSION['access_level'] == 2) {
+                echo('<a href="personActions.php?formAction=searchPeople"><u>Search Trainers</u></a>');
                 echo('<a href="personActions.php?formAction=removePerson"><u>Remove Trainer</u></a>');
-            } ?>
-        </div>
-    </div>
+                echo('</div>');
+                echo('</div>');
+            } else if ($_SESSION['access_level'] == 1) {
+                echo('<a href="personActions.php?formAction=editPerson" class="hlink">Edit Account</a>');
+            }
+            ?>
     <a href="logout.php" class="hlink" style="float:right">Logout</a>
 </div>
 </html>
