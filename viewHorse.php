@@ -65,6 +65,8 @@ function cancelNote(){
     <?PHP
         include_once('header.php');
         include_once('database/dbinfo.php');
+	include_once('database/persondb.php');
+	include_once('domain/Person.php');
         $con = connect();
     ?>
     <div class="content">
@@ -231,7 +233,35 @@ function cancelNote(){
                 echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
                 ?>
                 </form>
-            </div>
+	    </div>
+	    <div class="form-popup" id="addTrainer">
+
+		<?php
+		if(isset($_POST['trainerToAdd'])){
+			$trainerToAdd=$_POST['trainerToAdd'];
+		        $todqry="INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('".$trainerToAdd."','".$selectedHorse."');";
+			mysqli_query($con,$todqry);
+		 		
+			
+			    	
+			
+		}
+		?>
+	
+		<?php
+		$qry= "SELECT firstName, lastName, id from persondb";
+		$allTrainers = mysqli_query($con,$qry);
+		echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Add Trainer to Horse</h1>";
+                echo "<label for='addTrainer'><b>Add Trainer</b></label>";
+		echo "<select name='trainerToAdd' id='trainerToAdd'>";
+		while($trainers = mysqli_fetch_array($allTrainers)){
+			echo "<option value='". $trainers['id'] ."'>". $trainers['firstName'].' '.$trainers['lastName']."</option>";
+		}
+		echo "</select>";
+                echo "<button type='submit' class='btn'>Add</button>";
+                echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+		?>
         </div>
         <?PHP } ?>
     </div>
