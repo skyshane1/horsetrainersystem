@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(E_ERROR | E_PARSE);
 function searchBy($in){
     $userSearch='\'%'.$in.'%\'';
     $qry='select * from horsedb where horseName like '.$userSearch.'';
@@ -127,7 +128,6 @@ function cancelNote(){
                 }
                 echo '</form>';
 
-
                 if (isset($_POST['note'])){
                     $note=$_POST['note'];
                     $date=date("Y-m-d");
@@ -143,30 +143,61 @@ function cancelNote(){
                 ?>
             </table>
         </form>
-        <?PHP } else if($selectedHorse != null){ ?>
-            <?PHP echo('<h2>'.$selectedHorse.'</h2>');?>
-            <div class="flex-container">
+        <?PHP } else if($selectedHorse != null){?>
+                <!-- View Horse Info Table -->
+                <?PHP
+                    include_once('database/horsedb.php');
+                    $horseFill = retrieve_horse($selectedHorse);
+                ?>
+                <table class="horseinfo">
+                    <tr>
+                        <th>Name</th>
+                        <th>Color</th>
+                        <th>Breed</th>
+                        <th>Pasture</th>
+                        <th>Rank</th>
+
+                    </tr>
+                    <tr>
+                        <td><?PHP echo($horseFill->get_horseName()); ?></td>
+                        <td><?PHP echo($horseFill->get_color()); ?></td>
+                        <td><?PHP echo($horseFill->get_breed()); ?></td>
+                        <td><?PHP echo($horseFill->get_pastureNum()); ?></td>
+                        <td><?PHP echo($horseFill->get_colorRank()); ?></td>
+                    </tr>
+                </table>
                 <!-- View Notes Table -->
-                <table>
-                    <?php
-                    if (isset($_GET['curr_horse_button']) && $_GET['curr_horse_button']!=$_SESSION['curr_horse']){
-                        $_SESSION['curr_horse']=$_GET['curr_horse_button'];
+        <div class="flex-container">
+                <!-- New Notes -->
+            <form>
+                <h2>View Notes</h2>
+                <div class="scroll">
+                    <table>
+                    <?PHP
+                    if($_GET['searchNote'] != null){
+                        $curr_horse_qry = "Select * from notesdb where note like '%" . $_GET['searchNote'] . "%' order by noteDate DESC;";
+                    } else {
+                        $curr_horse_qry = "Select * from notesdb where horseName = '" . $selectedHorse . "' order by noteDate DESC;";
                     }
-                    echo '<tr style="width:30%;border:none;"><th>Viewing notes of ' .$selectedHorse. '</th></tr>';
-                    $curr_horse_qry="Select * from notesdb where horseName = '" .$selectedHorse. "' order by noteDate DESC;";
                     $curr_fetched=mysqli_query($con,$curr_horse_qry);
-                    while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)){
-                        $curr_trainer_qry="Select * from persondb where id = '" .$row['trainerId']. "';";
-                        $curr_trainer=mysqli_query($con, $curr_trainer_qry);
+                    while($row=mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)) {
+                        $curr_trainer_qry = "Select * from persondb where id = '" . $row['trainerId'] . "';";
+                        $curr_trainer = mysqli_query($con, $curr_trainer_qry);
                         $trainer_id = mysqli_fetch_array($curr_trainer, MYSQLI_ASSOC);
                         $hnote = $row['note'];
-                        echo "<tr><td> ".$hnote. " ";
-                        echo "<br>" .$trainer_id['fullName']." ".$row['noteDate']."</td></tr></div>";
+                        echo "<tr><td> " . $hnote . " ";
+                        echo "<br>" . $trainer_id['fullName'] . " " . $row['noteDate'] . "</td></tr>";
                     }
-
                     ?>
-                    <tr><td style='text-align:center;'><button class="addNote" onclick="addNote()">Add Notes</button></td></tr>
-                </table>
+                    </table>
+                </div>
+                <div class="flex-container">
+                    <input type="text" placeholder="Search" name="searchNote">
+                    <input type="hidden" name="selectedHorse" value="<?PHP echo"$selectedHorse" ?>">
+                    <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
+                </div>
+            </form>
+
                 <!-- View Behaviors Table -->
                 <table>
                     <?php
