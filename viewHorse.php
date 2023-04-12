@@ -298,11 +298,12 @@ function cancelNote(){
 	<div class="form-popup" id="removeTrainer">
 
 		<?php
-		if (isset($_POST['removedTrainer'])){
+		/*if (isset($_POST['removedTrainer'])){
 			$removeId=$_POST['removedTrainer'];
 			$removeqry="DELETE FROM trainertohorsedb where trainerId='$id' and horseName='.$selectedHorse.'";
 			$delete=mysqli_query($con,$removeqry);
 		}
+		 */
 		$qry= "SELECT firstName, lastName, id from persondb join trainertohorsedb on trainerId=id and horseName='".$selectedHorse."' order by lastName";
 		$trainersForHorse = mysqli_query($con,$qry);
 		echo "<form method='post' action='' class='form-container'>";
@@ -312,16 +313,19 @@ function cancelNote(){
 		echo "<br>";
 		if(mysqli_num_rows($trainersForHorse)>0){
 		while($trainersRem = mysqli_fetch_array($trainersForHorse)){
-			echo $trainerRem['firstName'].' '.$trainersRem['lastName'];
-                	echo "<input type='submit' name='removedTrainer' value='X' class='btn'/>";	
+			echo $trainersRem['firstName'].' '.$trainersRem['lastName'];
+                //	echo "<input type='submit' name='removedTrainer' value='X' class='btn'/>";	
 			echo "<br>";
 		}
 		}
 		else{
 			echo "No trainers currently training ".$selectedHorse.".";
+			
 		}
-		?>
-        </div>
+		 
+?>
+
+	</div>
         <?PHP } ?>
     </div>
 </html>
