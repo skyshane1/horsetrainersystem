@@ -137,12 +137,12 @@ function cancelNote(){
                         $note=$_POST['note'];
                         $date=date("Y-m-d");
                         $time=date("Y-m-d H:i:s");
-                        addNoteToDB($_SESSION['curr_horse'],$note,$date,$time);
+                        addNoteToDB($selectedHorse,$note,$date,$time);
                         $_POST['note']=NULL;
                     }
                     if (isset($_POST['behavior'])){
                         $behavior=$_POST['behavior'];
-                        addBehaviorToDB($_SESSION['curr_horse'],$behavior);
+                        addBehaviorToDB($selectedHorse,$behavior);
                         $_POST['behavior']=NULL;
                     }
                 ?>
