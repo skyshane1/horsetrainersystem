@@ -185,6 +185,7 @@ function process_form($name, $person, $action) {
 
 			}
 
+                     	if($allPersons>0){   
 		    echo("<table>
                                 <tr>
                                     <th>First Name</th>
@@ -193,7 +194,6 @@ function process_form($name, $person, $action) {
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>");
-                     	if($allPersons!=0){   
                         for($x = 0; $x < count($allPersons); $x++) {
                             echo("<tr>
                                     <td> " . $allPersons[$x]->get_firstName() . " </td>
