@@ -6,7 +6,7 @@
 }
 
 .content {
-    max-width: 70%;
+    max-width: 60%;
     margin: auto;
     background: white;
     padding: 32px;
@@ -108,6 +108,15 @@ input[type=submit]:hover {
 table{
     border-spacing: 0;
     text-align: center;
+}
+
+.infoTable{
+    display: flex;
+    justify-content: center;
+}
+
+.behaviors{
+    text-align: left;
 }
 
 td{

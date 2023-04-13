@@ -110,24 +110,15 @@ function process_form($title, $behavior, $action) {
                 }
             ?>
         </title>
-        <style>
-            th, tr, td 
-            {
-                border-left: 1px solid black;
-                border-right: 1px solid black;
-                border-top: 1px solid black;
-                border-bottom: 1px solid black;
-            }
-        </style>
-        <link rel="stylesheet" href="lib/jquery-ui.css" />
-        <link rel="stylesheet" href="newstyle.css" type="text/css" />
+        <link rel="stylesheet" href="lib/jquery-ui.css"/>
+        <link rel="stylesheet" href="newstyle.css" type="text/css"/>
         <script src="lib/jquery-1.9.1.js"></script>
-        <script src="lib/jquery-ui.js"></script>      
+        <script src="lib/jquery-ui.js"></script>
     </head>
     <body>
-        <div id="container">
+        <div class="container">
             <?PHP include('header.php'); ?>
-            <div id="content">
+            <div class="content">
                 <?PHP 
 
                 //If the user wanted to search all behaviors,
@@ -149,9 +140,9 @@ function process_form($title, $behavior, $action) {
                         //so retrieve and show all of the behaviors in a table.
                         $allBehaviors = getall_behaviordb();
 
-                        echo("<h2><strong>List of behaviors</strong></h2>");
+                        echo("<h2>List of behaviors</h2>");
                         echo("<br>");
-                        echo("<table>
+                        echo("<table class='infoTable'>
                                 <tr>
                                     <th>Title</th>
                                     <th>Level</th>
@@ -160,7 +151,7 @@ function process_form($title, $behavior, $action) {
                         for($x = 0; $x < count($allBehaviors); $x++) {
                             echo("<tr>
                                     <td> " . $allBehaviors[$x]->get_title() . " </td>
-                                    <td style='border-left: 1px solid black'> " . $allBehaviors[$x]->get_behaviorLevel() . " </td>
+                                    <td> " . $allBehaviors[$x]->get_behaviorLevel() . " </td>
                                 </tr>");
                         }
                         
@@ -286,7 +277,7 @@ function process_form($title, $behavior, $action) {
                         else if((retrieve_behavior($newTitle)) && (strcmp($oldTitle, $newTitle) != 0)) {
                             
                             //print that the user cannot change a behavior name to an existing name, and then show the form again.
-                            echo("<h4 style='color:FF0000'>" . $newTitle . " is the title of an existing behavior. Please enter another title.</h4><br>");
+                            echo("<h4>" . $newTitle . " is the title of an existing behavior. Please enter another title.</h4><br>");
                             include("editBehaviorForm.inc");
                         }
                     

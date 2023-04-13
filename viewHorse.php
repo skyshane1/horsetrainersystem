@@ -197,9 +197,10 @@ function cancelNote(){
             </form>
 
                 <!-- View Behaviors Table -->
-                <table>
+                <table class="behaviors">
                     <?php
                     echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
+                    echo '<tr><td>Behavior</td><td>Start Date</td><td>Complete</td><td>Completed Date</td></tr>';
                     if (isset($_POST['behaviorChanges'])){
                         $curr_allbehaviorsqry="select * from behaviordb;";
                         $wipeBehaviors="delete from horsetobehaviordb where horsename='".$selectedHorse."';";
@@ -224,15 +225,16 @@ function cancelNote(){
                             $behaviorHash[$row['behaviorTitle']]=1;
                         }
                         while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                            if(isset($behaviorHash[$row['title']])){
-                                echo "<tr><td style='border:none'><input type='checkbox' checked name='".$row['title']."'/>";
-                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                echo "</td></tr>";
+                            echo "<tr><td><label for='".$row['title']."'>".$row['title']."</label></td>";
+                            echo "<td><label for='".$row['startDate']."'>".$row['startDate']."</label></td>";
+                            if(isset($behaviorHash[$row['completed']])){
+                                echo "<td><input type='checkbox' checked name='".$row['title']."'/>";
+                                echo "</td>";
                             } else {
-                                echo "<tr><td style='border:none'><input type='checkbox' name='".$row['title']."'/>";
-                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                echo "</td></tr>";
+                                echo "<td><input type='checkbox' name='".$row['title']."'/>";
+                                echo "</td>";
                             }
+                            echo "<td><label for='".$row['endDate']."'>".$row['endDate']."</label></td></tr>";
                         }
                         echo "<tr><td ><input type='submit' name='behaviorChanges' value='Confirm Changes'/></td></tr>"
                         ?>
