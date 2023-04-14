@@ -161,8 +161,69 @@ function process_form($name, $person, $action)
 
                 }
 
-
                 echo("<table class='infoTable'>
+
+            ?>
+        </title>
+        <style>
+            th, tr, td 
+            {
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                border-top: 1px solid black;
+                border-bottom: 1px solid black;
+            }
+        </style>
+        <link rel="stylesheet" href="lib/jquery-ui.css" />
+        <link rel="stylesheet" href="newstyle.css" type="text/css" />
+        <script src="lib/jquery-1.9.1.js"></script>
+        <script src="lib/jquery-ui.js"></script>      
+    </head>
+    <body>
+        <div id="container">
+            <?PHP include('header.php'); ?>
+            <div class="content">
+                <?PHP 
+
+                //If the user wanted to search all people,
+                if($formAction == 'searchPeople') {
+
+                    //check if there are people in the database to edit.
+                    $numPersons = get_numPersons();
+
+                    //If there aren't any people in the database, 
+                    if($numPersons == 0) {
+
+                        //display an error messsage.
+                        echo("<p><strong>There are no people to search.</strong></p>");
+                        echo('<p>Please add people using the "Add Trainer" link next to "Trainer Actions".</p><br>');
+                    }
+                    //Else, there are people in the database,
+                    else {
+
+
+                        echo("<h2><strong>List of People</strong></h2>");
+			echo("<br>");
+			echo("<form action='personActions.php'>");
+				echo("<input type='hidden' name='formAction' value='searchPeople'>");
+				echo("<input type='text' placeholder='Search for Trainer' name='searchoption'>");
+				echo("<input type='submit' value='Search'>");
+				if (isset($_GET['searchoption'])){
+					$searchValue=$_GET['searchoption'];
+				}
+				
+			echo("</form>");
+			if (empty($searchValue)){	
+				//so retrieve and show all of the people in a table.
+                        	$allPersons = getall_persondb();
+			}
+			else{
+				$allPersons = filter_persondb($searchValue);	
+
+			}
+
+                     	if($allPersons>0){   
+		    echo("<table>
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
@@ -170,6 +231,7 @@ function process_form($name, $person, $action)
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>");
+
                 if ($allPersons != 0) {
                     for ($x = 0; $x < count($allPersons); $x++) {
                         echo("<tr>

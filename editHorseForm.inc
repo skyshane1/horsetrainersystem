@@ -34,16 +34,18 @@
 
     <?PHP
         //If the user is editing an existing horse, pass the existing name in "oldName" back to "horseActions.php" for editing purposes.
-        echo("<input type='hidden' name='oldName' value='$oldName'/>");
+        if ($formAction == "editHorse") {
+            echo("<input type='hidden' name='oldName' value='$oldName'/>");
+        }        
     ?>
     <fieldset>
         <legend>Horse Information:</legend>
         <?php
             if($formAction == "addHorse" || $formAction == "confirmAdd") {
                 //leave the fields blank
-                echo("<p>Horse Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='horseName' tabindex='1' value='$oldName'></p>");
-                echo("<p>Breed: <input type='text' name='breed' tabindex='1' value='$currentBreed'></p>");
-                echo("<p>Color: <input type='text' name='color' tabindex='1' value='$currentColor'></p>");
+                echo("<p>Horse Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='horseName' tabindex='1'></p>");
+                echo("<p>Breed: <input type='text' name='breed' tabindex='1' ></p>");
+                echo("<p>Color: <input type='text' name='color' tabindex='1' ></p>");
                 echo("<p>Pasture Number: <input type='number' name='pastureNum' tabindex='1' min='1' max='11'></p>");
             } 
             else  { //$formAction == "editHorse" or "confirmEdit"

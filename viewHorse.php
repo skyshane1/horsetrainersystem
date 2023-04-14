@@ -22,7 +22,9 @@ function orderBy($in){
 
 function addNoteToDB($horseName,$note,$date,$time){
     $con=connect();
+
     $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['_id']."');";
+
     return mysqli_query($con,$qry); 
 }
 
@@ -66,6 +68,8 @@ function cancelNote(){
     <?PHP
         include_once('header.php');
         include_once('database/dbinfo.php');
+	include_once('database/persondb.php');
+	include_once('domain/Person.php');
         $con = connect();
     ?>
     <div class="content">
@@ -133,7 +137,6 @@ function cancelNote(){
                 <?PHP
                     include_once('database/horsedb.php');
                     $horseFill = retrieve_horse($selectedHorse);
-
                     if (isset($_POST['note'])){
                         $note=$_POST['note'];
                         $date=date("Y-m-d");
@@ -143,6 +146,7 @@ function cancelNote(){
                     }
                     if (isset($_POST['behavior'])){
                         $behavior=$_POST['behavior'];
+
                         $date=date("Y-m-d");
                         addBehaviorToDB($selectedHorse,$behavior,$date);
                         $_POST['behavior']=NULL;
@@ -244,6 +248,7 @@ function cancelNote(){
                 echo "<label for='Note'><b>Note</b></label>";
                 echo "<input type='text' placeholder='Enter Note' name='note' required>";
                 echo "<button type='submit' class='btn'>Add</button>";
+
                 ?>
                 </form>
             </div>
@@ -261,10 +266,71 @@ function cancelNote(){
                 }
                 echo "</select>";
                 echo "<button type='submit' class='btn'>Add</button>";
+
                 ?>
                 </form>
-            </div>
+	    </div>
+	    <div class="form-popup" id="addTrainer">
+
+		<?php
+		if(isset($_POST['trainerToAdd'])){
+			$trainerToAdd=$_POST['trainerToAdd'];
+		        $todqry="INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('".$trainerToAdd."','".$selectedHorse."');";
+			mysqli_query($con,$todqry);
+		 		
+			
+			    	
+			
+		}
+		?>
+	
+		<?php
+		$qry= "SELECT firstName, lastName, id from persondb order by lastName";
+		$allTrainers = mysqli_query($con,$qry);
+		echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Add Trainer to Horse</h1>";
+                echo "<label for='addTrainer'><b>Add Trainer</b></label>";
+		echo "<select name='trainerToAdd' id='trainerToAdd'>";
+		echo "<option selected='true' disabled='disabled'>Select Trainer</option>";
+		while($trainers = mysqli_fetch_array($allTrainers)){
+			echo "<option value='". $trainers['id'] ."'>". $trainers['firstName'].' '.$trainers['lastName']."</option>";
+		}
+		echo "</select>";
+                echo "<button type='submit' class='btn'>Add</button>";
+                echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+		?>
         </div>
+	<div class="form-popup" id="removeTrainer">
+
+		<?php
+		/*if (isset($_POST['removedTrainer'])){
+			$removeId=$_POST['removedTrainer'];
+			$removeqry="DELETE FROM trainertohorsedb where trainerId='$id' and horseName='.$selectedHorse.'";
+			$delete=mysqli_query($con,$removeqry);
+		}
+		 */
+		$qry= "SELECT firstName, lastName, id from persondb join trainertohorsedb on trainerId=id and horseName='".$selectedHorse."' order by lastName";
+		$trainersForHorse = mysqli_query($con,$qry);
+		echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Horse Trainers</h1>";
+		echo "<label for='removeTrainer'><b>". $selectedHorse ."'s Trainer(s)</b></label>";
+		echo "<br>";
+		echo "<br>";
+		if(mysqli_num_rows($trainersForHorse)>0){
+		while($trainersRem = mysqli_fetch_array($trainersForHorse)){
+			echo $trainersRem['firstName'].' '.$trainersRem['lastName'];
+                //	echo "<input type='submit' name='removedTrainer' value='X' class='btn'/>";	
+			echo "<br>";
+		}
+		}
+		else{
+			echo "No trainers currently training ".$selectedHorse.".";
+			
+		}
+		 
+?>
+
+	</div>
         <?PHP } ?>
     </div>
 </html>
