@@ -23,7 +23,7 @@ function orderBy($in){
 function addNoteToDB($horseName,$note,$date,$time){
     $con=connect();
 
-    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['_id']."');";
+    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['ID']."');";
 
     return mysqli_query($con,$qry); 
 }
@@ -146,7 +146,6 @@ function cancelNote(){
                     }
                     if (isset($_POST['behavior'])){
                         $behavior=$_POST['behavior'];
-
                         $date=date("Y-m-d");
                         addBehaviorToDB($selectedHorse,$behavior,$date);
                         $_POST['behavior']=NULL;
@@ -212,7 +211,8 @@ function cancelNote(){
                         $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
                         $date=date("Y-m-d");
                         while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                            if ($_POST[$row['behaviorTitle']]=="on"){
+                            $tempname=str_replace(" ","_",$row['behaviorTitle']);
+                            if($_POST[$tempname]=="on"){
                                 $addBehavior="UPDATE `horsetobehaviordb` SET `endDate`='".$date."',`completed`= 1 WHERE `behaviorTitle`='".$row['behaviorTitle']."' and `horseName`='".$selectedHorse."'; ";
                                 mysqli_query($con,$addBehavior);
                             }
@@ -226,13 +226,13 @@ function cancelNote(){
                         while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
                             echo "<tr><td><label for='".$row['behaviorTitle']."'>".$row['behaviorTitle']."</label></td>";
                             echo "<td><label for='".$row['startDate']."'>".$row['startDate']."</label></td>";
+                            $tempname=str_replace(" ","_",$row['behaviorTitle']);
                             if($row['completed'] == 1){
-                                echo "<td><input type='checkbox' checked name='".$row['behaviorTitle']."'/>";
-                                echo "</td>";
+                                echo "<td><input type='checkbox' checked name='".$tempname."'/>";
                             } else {
-                                echo "<td><input type='checkbox' name='".$row['behaviorTitle']."'/>";
-                                echo "</td>";
+                                echo "<td><input type='checkbox' name='".$tempname."'/>";
                             }
+                            echo "</td>";
                             echo "<td><label for='".$row['endDate']."'>".$row['endDate']."</label></td></tr>";
                         }
                         ?>
