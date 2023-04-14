@@ -22,13 +22,15 @@ function orderBy($in){
 
 function addNoteToDB($horseName,$note,$date,$time){
     $con=connect();
-    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['ID']."');";
+
+    $qry="INSERT INTO `notesdb` (`horseName`, `noteDate`, `noteTimestamp`, `note`, `trainerId`) VALUES ('".$horseName."','".$date."', '".$time."', '".$note."', '".$_SESSION['_id']."');";
+
     return mysqli_query($con,$qry); 
 }
 
-function addBehaviorToDB($horseName,$behavior){
+function addBehaviorToDB($horseName,$behavior,$date){
     $con=connect();
-    $qry="INSERT INTO `horsetobehaviordb` (`horseName`, `behaviorTitle`) VALUES ('".$horseName."','".$behavior."');";
+    $qry="INSERT INTO `horsetobehaviordb` (`horseName`, `behaviorTitle`, `startDate`) VALUES ('".$horseName."','".$behavior."','".$date."');";
     return mysqli_query($con,$qry); 
 }
 
@@ -144,7 +146,9 @@ function cancelNote(){
                     }
                     if (isset($_POST['behavior'])){
                         $behavior=$_POST['behavior'];
-                        addBehaviorToDB($selectedHorse,$behavior);
+
+                        $date=date("Y-m-d");
+                        addBehaviorToDB($selectedHorse,$behavior,$date);
                         $_POST['behavior']=NULL;
                     }
                 ?>
@@ -198,50 +202,43 @@ function cancelNote(){
             </form>
 
                 <!-- View Behaviors Table -->
-                <table>
+                <form method="post">
+                <table class="behaviors">
                     <?php
-                    echo '<tr><th>' .$selectedHorse.'\' Behaviors</th></tr>';
+                    echo '<h2>' .$selectedHorse.'\' Behaviors</h2>';
+                    echo '<tr><th>Behavior</th><th>Start Date</th><th>Complete</th><th>Completed Date</th></tr>';
                     if (isset($_POST['behaviorChanges'])){
-                        $curr_allbehaviorsqry="select * from behaviordb;";
-                        $wipeBehaviors="delete from horsetobehaviordb where horseName='".$selectedHorse."';";
-                        mysqli_query($con,$wipeBehaviors);
+                        $curr_allbehaviorsqry="select * from horsetobehaviordb where horseName='".$selectedHorse."';";
                         $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                        $date=date("Y-m-d");
                         while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                            $tempname=str_replace(" ","_",$row['title']);
-                            if ($_POST[$tempname]=="on"){
-                                $addBehavior="INSERT INTO `horsetobehaviordb`(`horseName`, `behaviorTitle`) VALUES ('".$selectedHorse."' ,'".$row['title']."');";
+                            if ($_POST[$row['behaviorTitle']]=="on"){
+                                $addBehavior="UPDATE `horsetobehaviordb` SET `endDate`='".$date."',`completed`= 1 WHERE `behaviorTitle`='".$row['behaviorTitle']."' and `horseName`='".$selectedHorse."'; ";
                                 mysqli_query($con,$addBehavior);
                             }
                         }
                     }
                     ?>
-                    <form method="post">
-                        <?php
 
-                        $curr_allbehaviorsqry="select * from behaviordb;";
+                        <?php
                         $curr_behaviorsqry="select * from horsetobehaviordb where horseName = '".$selectedHorse."';";
-                        $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
                         $curr_behaviors=mysqli_query($con,$curr_behaviorsqry);
                         while($row=mysqli_fetch_array($curr_behaviors, MYSQLI_ASSOC)){
-                            $behaviorHash[$row['behaviorTitle']]=1;
-                        }
-                        while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
-                            if(isset($behaviorHash[$row['title']])){
-                                $tempname=str_replace(" ","_",$row['title']);
-                                echo "<tr><td style='border:none'><input type='checkbox' checked name='".$tempname."'/>";
-                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                echo "</td></tr>";
+                            echo "<tr><td><label for='".$row['behaviorTitle']."'>".$row['behaviorTitle']."</label></td>";
+                            echo "<td><label for='".$row['startDate']."'>".$row['startDate']."</label></td>";
+                            if($row['completed'] == 1){
+                                echo "<td><input type='checkbox' checked name='".$row['behaviorTitle']."'/>";
+                                echo "</td>";
                             } else {
-                                $tempname=str_replace(" ","_",$row['title']);
-                                echo "<tr><td style='border:none'><input type='checkbox' name='".$tempname."'/>";
-                                echo "<label for='".$row['title']."'>".$row['title']."</label>";
-                                echo "</td></tr>";
+                                echo "<td><input type='checkbox' name='".$row['behaviorTitle']."'/>";
+                                echo "</td>";
                             }
+                            echo "<td><label for='".$row['endDate']."'>".$row['endDate']."</label></td></tr>";
                         }
-                        echo "<tr><td ><input type='submit' name='behaviorChanges' value='Confirm Changes'/></td></tr>"
                         ?>
-                    </form>
-                </table>
+                    </table>
+                    <input type='submit' name='behaviorChanges' value='Confirm Changes'/>
+                </form>
             </div>
             <!-- Add Note -->
             <div class="form-popup" id="addNote">
@@ -251,19 +248,25 @@ function cancelNote(){
                 echo "<label for='Note'><b>Note</b></label>";
                 echo "<input type='text' placeholder='Enter Note' name='note' required>";
                 echo "<button type='submit' class='btn'>Add</button>";
-                //echo "<button type='button' class='btn cancel' onclick='cancelNote()'>Close</button>";
+
                 ?>
                 </form>
             </div>
-            <!-- End Add Note -->
+            <!-- End Add Behavior -->
             <div class="form-popup" id="addBehavior">
                 <?php
                 echo "<form method='post' action='' class='form-container'>";
                 echo "<h1>Add Behavior</h1>";
-                echo "<label for='Behavior'><b>Behavior</b></label>";
-                echo "<input type='text' placeholder='Enter Behavior' name='behavior' required>";
+                echo "<label for='behavior'><b>Behavior</b></label>";
+                echo "<select name='behavior' id='behavior'>";
+                $curr_allbehaviorsqry="select * from behaviordb where title not in (select behaviorTitle as title from horsetobehaviordb where horseName = '".$selectedHorse."');";
+                $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                    echo "<option value=\"".$row['title']."\">".$row['title']."</option>";
+                }
+                echo "</select>";
                 echo "<button type='submit' class='btn'>Add</button>";
-                //echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+
                 ?>
                 </form>
 	    </div>
