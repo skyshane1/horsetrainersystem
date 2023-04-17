@@ -145,6 +145,10 @@ function cancelNote(){
                 <!-- View Horse Info Table -->
                 <?PHP
                     include_once('database/horsedb.php');
+                    if (isset($_POST['rank'])){
+                        $qry="UPDATE horsedb SET colorRank='".$_POST['rank']."' WHERE horseName='".$selectedHorse."';";
+                        mysqli_query($con,$qry); 
+                    }
                     $horseFill = retrieve_horse($selectedHorse);
                     if (isset($_POST['note'])){
                         $note=$_POST['note'];
@@ -309,6 +313,30 @@ function cancelNote(){
                 echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
 		?>
         </div>
+
+        <!--here is the rank-->
+                <div class="form-popup" id="addBehavior">
+        <?php 
+        
+        echo "<form method='post' action='' class='form-container'>";
+        echo "<h1>Change Rank</h1>";
+        echo "<label for='rank'><b>Rank</b></label>";
+        echo "<select name='rank' id='rank'>";
+        $row=["green","yellow","red"];
+        for($x=0;$x<3;$x++){
+            echo "<option value=\"".$row[$x]."\">".$row[$x]."</option>";
+        }
+        echo "</select>";
+        echo "<button type='submit' class='btn'>Add</button>";
+        
+        ?>
+        </form>
+</div>
+        <!--End of rank-->
+
+
+
+
 	<div class="form-popup" id="removeTrainer">
 
 		<?php
