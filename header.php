@@ -36,6 +36,7 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
         echo('<a href="viewHorse.php?selectedHorse= " class="hlink">Search Horse</a>');
     }
     ?>
+    <?php if ($_SESSION['access_level'] == 2) { ?>
     <div class="dropdown">
         <button class="dropbtn">Behavior Actions</button>
         <div class="dropdown-content">
@@ -45,6 +46,7 @@ if ($_SESSION['access_level'] != 2 and $_SESSION['access_level'] != 1) {
             <a href="behaviorActions.php?formAction=removeBehavior"><u>Remove Behavior</u></a>
         </div>
     </div>
+   <?php } ?>
             <?php if ($_SESSION['access_level'] == 2) {
                 echo('<div class="dropdown">');
                 echo('<button class="dropbtn">Trainer Actions</button>');
