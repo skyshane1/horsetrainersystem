@@ -150,6 +150,7 @@ function process_form($name, $person, $action)
 
 
                         echo("<h2><strong>List of People</strong></h2>");
+			echo ("<p> Please use the search bar to search for a trainer. Type the name you want to look for, then hit <b>Search</b>.</p>");
                         echo("<br>");
                         echo("<form action='personActions.php'>");
                         echo("<input type='hidden' name='formAction' value='searchPeople'>");
