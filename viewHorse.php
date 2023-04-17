@@ -317,9 +317,15 @@ function cancelNote(){
 
 		<?php
 		if(isset($_POST['trainerToAdd'])){
+			try{	
 			$trainerToAdd=$_POST['trainerToAdd'];
 		        $todqry="INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('".$trainerToAdd."','".$selectedHorse."');";
-			mysqli_query($con,$todqry);
+			$addTrainerResult=mysqli_query($con,$todqry);
+			}
+			catch(Exception $e){
+				echo "<h2 style='color:red';>WARNING: Don't add duplicate trainer to horse</h2>";
+			}
+			
 		}
 		?>
 	
@@ -367,8 +373,8 @@ function cancelNote(){
 
 		<?php
 		if (isset($_POST['removedTrainer'])){
-			$removeId=$_GET['removedTrainer'];
-			$removeqry="DELETE FROM trainertohorsedb where trainerId='$removeId' and horseName='.$selectedHorse.'";
+			$removeId=$_POST['removedTrainer'];
+			$removeqry="DELETE FROM trainertohorsedb where trainerId=".$removeId." and horseName='".$selectedHorse."'";
 			$delete=mysqli_query($con,$removeqry);
 		}
  	 
