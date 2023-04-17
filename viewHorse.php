@@ -34,6 +34,12 @@ function addBehaviorToDB($horseName,$behavior,$date){
     return mysqli_query($con,$qry); 
 }
 
+function removeBehaviorFromDB($horseName,$behavior,$date){
+    $con=connect();
+    $qry="UPDATE `horsetobehaviordb` SET `endDate`= NULL,`completed`= 0 WHERE `behaviorTitle`='".$behavior."' and `horseName`='".$horseName."'; ";
+    return mysqli_query($con,$qry);
+}
+
 $selectedHorse = $_GET["selectedHorse"];
 ?>
 
@@ -159,6 +165,12 @@ function cancelNote(){
                         addBehaviorToDB($selectedHorse,$behavior,$date);
                         $_POST['behavior']=NULL;
                     }
+                    if (isset($_POST['dbehavior'])){
+                        $behavior=$_POST['dbehavior'];
+                        $date=date("null");
+                        removeBehaviorFromDB($selectedHorse,$behavior,$date);
+                        $_POST['behavior']=NULL;
+                    }
                 ?>
                 <table class="horseinfo">
                     <tr>
@@ -279,6 +291,24 @@ function cancelNote(){
                 ?>
                 </form>
 	    </div>
+            <!-- Remove Behavior -->
+            <div class="form-popup" id="removeBehavior">
+                <?php
+                echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Remove Behavior</h1>";
+                echo "<label for='dbehavior'><b>Behavior</b></label>";
+                echo "<select name='dbehavior' id='dbehavior'>";
+                $curr_allbehaviorsqry="select behaviorTitle from horsetobehaviordb where horseName = '".$selectedHorse."'and completed=1;";
+                $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                    echo "<option value=\"".$row['behaviorTitle']."\">".$row['behaviorTitle']."</option>";
+                }
+                echo "</select>";
+                echo "<button type='submit' class='btn'>Uncheck</button>";
+                echo "</form>"
+                ?>
+                </form>
+            </div>
 	    <div class="form-popup" id="addTrainer">
 
 		<?php
@@ -286,10 +316,6 @@ function cancelNote(){
 			$trainerToAdd=$_POST['trainerToAdd'];
 		        $todqry="INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('".$trainerToAdd."','".$selectedHorse."');";
 			mysqli_query($con,$todqry);
-		 		
-			
-			    	
-			
 		}
 		?>
 	
