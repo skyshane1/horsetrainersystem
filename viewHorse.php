@@ -84,7 +84,7 @@ function cancelNote(){
                 <input type="text" placeholder="Search" name="search">
                 <button type="submit" style="background-color: white; vertical-align:bottom"><img style="width: 17px; height: 15px;" src="https://i.stack.imgur.com/xXLCA.png"></button>
             </div>
-            <table>
+            <table style="display: flex; justify-content: center">
                 <form method='get'>
                     <tr>
                         <th><button type='submit' name='order' value='horseName'>Horse Name</button></th>
@@ -92,6 +92,7 @@ function cancelNote(){
                         <th><button type='submit' name='order' value='color'>Color</button></th>
                         <th><button type='submit' name='order' value='breed'>Breed</button></th>
                         <th><button type='submit' name='order' value='pastureNum'>Pasture</button></th>
+                        <th><button type='submit' name='order' value='trainer'>Trainer</button></th>
                     </tr>
                 </form>
                 <?php
@@ -114,6 +115,9 @@ function cancelNote(){
                     $horseColor=$row['color'];
                     $horseBreed=$row['breed'];
                     $horsePastureNum=$row['pastureNum'];
+                    $trainerQry='SELECT fullName FROM `persondb` WHERE id = (select trainerId from trainertohorsedb where horseName = "'.$horseName.'"); ';
+                    $trainerName=mysqli_query($con,$trainerQry);
+                    $tName=mysqli_fetch_array($trainerName, MYSQLI_ASSOC);
 
                     if (($indx % 2) == 1) {$rowClass = 'class="trodd"'; } else { $rowClass = 'class="treven"'; }
                     echo '<tr '.$rowClass.'>';
@@ -123,6 +127,11 @@ function cancelNote(){
                     echo '<td>'.$horseColor.'&nbsp;</td>';
                     echo '<td>'.$horseBreed.'&nbsp;</td>';
                     echo '<td>'.$horsePastureNum.'&nbsp;</td>';
+                    if($tName['fullName'] != null) {
+                        echo '<td>' . $tName['fullName'] . '&nbsp;</td>';
+                    } else {
+                        echo '<td>none &nbsp;</td>';
+                    }
                     echo '</tr>';
 
                 $indx++;

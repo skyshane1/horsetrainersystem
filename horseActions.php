@@ -138,7 +138,7 @@ function process_form($name, $horse, $action) {
         <script src="lib/jquery-ui.js"></script>      
     </head>
     <body>
-        <div id="container">
+        <div>
             <?PHP include('header.php'); ?>
             <div class="content">
                 <?PHP 
