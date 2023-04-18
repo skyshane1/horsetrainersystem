@@ -164,6 +164,33 @@ function getall_behaviordb() {
     return $theBehaviors;
 }
 
+function filter_behaviordb($name) {
+
+    //Create a database connection and retrieve all entries in the behavior table.
+    $con=connect();
+    $query = "SELECT * FROM behaviordb WHERE title LIKE '". $name . "%' ORDER BY behaviorLevel, title";
+    $result = mysqli_query($con,$query);
+
+    //If the query result is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+    
+    //Otherwise, create an array and convert each MySQL row into a Behavior object.s
+    $result = mysqli_query($con,$query); //This line might be redundant
+    $theBehaviors = array();
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $theBehavior = make_a_behavior($result_row);
+        $theBehaviors[] = $theBehavior;
+    }
+
+    //Close the connection and return the array of Behavior objects.
+    mysqli_close($con);
+    return $theBehaviors;
+}
 
 /*
  * Function name: getall_behavior_titles()
