@@ -109,7 +109,7 @@ CREATE TABLE notesDB (
 
 CREATE TABLE dietaryRestrictionsDB (
   horseName varchar(50) NOT NULL,
-  restriction text,
+  restriction varchar(500),
   primary key (horseName, restriction),
   FOREIGN KEY (horseName) REFERENCES horseDB(horseName)
 );
