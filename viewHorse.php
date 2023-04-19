@@ -127,7 +127,7 @@ function cancelNote(){
                     $horseColor=$row['color'];
                     $horseBreed=$row['breed'];
                     $horsePastureNum=$row['pastureNum'];
-                    $trainerQry='SELECT fullName FROM `persondb` WHERE id = (select trainerId from trainertohorsedb where horseName = "'.$horseName.'"); ';
+                    $trainerQry='SELECT fullName FROM `persondb` WHERE id = (select trainerId from trainertohorsedb where horseName = "'.$horseName.' limit 1"); ';
                     $trainerName=mysqli_query($con,$trainerQry);
                     $tName=mysqli_fetch_array($trainerName, MYSQLI_ASSOC);
 
