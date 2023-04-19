@@ -108,6 +108,7 @@ input[type=submit]:hover {
 table{
     border-spacing: 0;
     text-align: center;
+    width: 100%;
 }
 
 .infoTable{
