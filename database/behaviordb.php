@@ -140,7 +140,7 @@ function getall_behaviordb() {
 
     //Create a database connection and retrieve all entries in the behavior table.
     $con=connect();
-    $query = "SELECT * FROM behaviordb ORDER BY title";
+    $query = "SELECT * FROM behaviordb ORDER BY behaviorLevel, title";
     $result = mysqli_query($con,$query);
 
     //If the query result is empty,

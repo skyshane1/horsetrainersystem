@@ -136,27 +136,46 @@ function process_form($title, $behavior, $action) {
                     }
 
                     //Else, there are behaviors in the database,
-                    else {
-                        //so retrieve and show all of the behaviors in a table.
-                        $allBehaviors = getall_behaviordb();
-
+		    else {
+			echo "<form action='behaviorActions.php'>";
+                        echo("<input type='hidden' name='formAction' value='searchBehavior'>");
+			//so retrieve and show all of the behaviors in a table.
+			    if (isset($_GET['searchoption'])){
+			    	$searchValue = $_GET['searchoption'];
+			    }    
+			    if (empty($searchValue)){
+				$allBehaviors = getall_behaviordb();			 
+			    }
+			    else{
+			    	$allBehaviors = filter_behaviordb($searchValue);
+			    }
                         echo("<h2>List of behaviors</h2>");
-                        echo("<br>");
+			    echo("<br>");
+			if($allBehaviors > 0){
                         echo("<table class='infoTable'>
                                 <tr>
                                     <th>Title</th>
                                     <th>Level</th>
                                 </tr>");
-                        
-                        for($x = 0; $x < count($allBehaviors); $x++) {
-                            echo("<tr>
-                                    <td> " . $allBehaviors[$x]->get_title() . " </td>
-                                    <td> " . $allBehaviors[$x]->get_behaviorLevel() . " </td>
-                                </tr>");
-                        }
-                        
+                        if($allBehaviors != 0){
+                        	for($x = 0; $x < count($allBehaviors); $x++) {
+	                            echo("<tr>
+        	                            <td> " . $allBehaviors[$x]->get_title() . " </td>
+                	                    <td> " . $allBehaviors[$x]->get_behaviorLevel() . " </td>
+                        	    </tr>");
+	                        }	
+			}
+			}
+			else{
+				echo "No Behaviors Match Your Search";
+			}
                         echo("</table>");  
-                    }
+			
+                        echo("<input type='hidden' name='formAction' value='searchBehavior'>");
+                        echo("<input type='text' placeholder='Search for Behavior' name='searchoption'>");
+                        echo("<button type='submit' class='btn'>Search</button>");
+		    }
+		    echo "</form>";
                 }
                 //Else, if the user wants to add a behavior,
                 else if($formAction == 'addBehavior') {

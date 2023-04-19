@@ -176,7 +176,7 @@ function process_form($name, $person, $action)
                                     <th>Role</th>
                                 </tr>");
 
-                            if ($allPersons != 0) {
+                            if ($allPersons > 0) {
                                 for ($x = 0; $x < count($allPersons); $x++) {
                                     echo("<tr>
                                     <td> " . $allPersons[$x]->get_firstName() . " </td>
@@ -186,7 +186,9 @@ function process_form($name, $person, $action)
                                     <td> " . $allPersons[$x]->get_userType() . " </td>
                                 </tr>");
                                 }
-                            } else {
+			    } 
+			}
+			else {
                                 echo("No Trainers Match Your Search");
                             }
 
@@ -196,13 +198,13 @@ function process_form($name, $person, $action)
 
                         echo("<input type='hidden' name='formAction' value='searchPeople'>");
                         echo("<input type='text' placeholder='Search for Trainer' name='searchoption'>");
-                        echo("<input type='submit' value='Search'>");
+                        echo("<button type='submit' class='btn'>Search</button>");
 
 
                         echo("</form>");
 
                     } //Else, if the user wants to add a behavior,
-                }
+                
                 else if ($formAction == 'addPerson') {
 
 
