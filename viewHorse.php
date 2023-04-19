@@ -39,7 +39,11 @@ function addDietaryRestrictionToDB($horseName,$dietaryRestriction){
     $qry="INSERT INTO `dietaryrestrictionsdb` (`horseName`, `restriction`) VALUES ('".$horseName."','".$dietaryRestriction."');";
     return mysqli_query($con,$qry); 
 }
-
+function removeBehaviorFromDB($horseName,$behavior,$date){
+    $con=connect();
+    $qry="UPDATE `horsetobehaviordb` SET `endDate`= NULL,`completed`= 0 WHERE `behaviorTitle`='".$behavior."' and `horseName`='".$horseName."'; ";
+    return mysqli_query($con,$qry);
+}
 $selectedHorse = $_GET["selectedHorse"];
 ?>
 
@@ -153,8 +157,12 @@ function cancelNote(){
                 <!-- View Horse Info Table -->
                 <?PHP
                     include_once('database/horsedb.php');
+		    if (isset($_POST['rank'])){
+                        $qry="UPDATE horsedb SET colorRank='".$_POST['rank']."' WHERE horseName='".$selectedHorse."';";
+                        mysqli_query($con,$qry); 
+                    }
                     $horseFill = retrieve_horse($selectedHorse);
-                    if (isset($_POST['note'])){
+		    if (isset($_POST['note'])){
                         $note=$_POST['note'];
                         $date=date("Y-m-d");
                         $time=date("Y-m-d H:i:s");
@@ -165,6 +173,12 @@ function cancelNote(){
                         $behavior=$_POST['behavior'];
                         $date=date("Y-m-d");
                         addBehaviorToDB($selectedHorse,$behavior,$date);
+                        $_POST['behavior']=NULL;
+		    }
+		    if (isset($_POST['dbehavior'])){
+                        $behavior=$_POST['dbehavior'];
+                        $date=date("null");
+                        removeBehaviorFromDB($selectedHorse,$behavior,$date);
                         $_POST['behavior']=NULL;
                     }
                     if (isset($_POST['dietary'])){
@@ -322,14 +336,36 @@ function cancelNote(){
                 ?>
                 </form>
 	    </div>
+            <!-- Remove Behavior -->
+            <div class="form-popup" id="removeBehavior">
+                <?php
+                echo "<form method='post' action='' class='form-container'>";
+                echo "<h1>Remove Behavior</h1>";
+                echo "<label for='dbehavior'><b>Behavior</b></label>";
+                echo "<select name='dbehavior' id='dbehavior'>";
+                $curr_allbehaviorsqry="select behaviorTitle from horsetobehaviordb where horseName = '".$selectedHorse."'and completed=1;";
+                $curr_allbehaviors=mysqli_query($con,$curr_allbehaviorsqry);
+                while($row=mysqli_fetch_array($curr_allbehaviors, MYSQLI_ASSOC)){
+                    echo "<option value=\"".$row['behaviorTitle']."\">".$row['behaviorTitle']."</option>";
+                }
+                echo "</select>";
+                echo "<button type='submit' class='btn'>Uncheck</button>";
+                echo "</form>"
+                ?>
+                </form>
+            </div>
 	    <div class="form-popup" id="addTrainer">
 
 		<?php
 		if(isset($_POST['trainerToAdd'])){
+			try{
 			$trainerToAdd=$_POST['trainerToAdd'];
 		        $todqry="INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('".$trainerToAdd."','".$selectedHorse."');";
 			mysqli_query($con,$todqry);
-		 		
+			}
+			catch(Exception $e){
+				echo "<h2>WARNING: Can't add duplicate trainer</h2>";
+			}	
 			
 			    	
 			
@@ -350,6 +386,7 @@ function cancelNote(){
 		echo "</select>";
                 echo "<button type='submit' class='btn'>Add</button>";
                 echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+		echo "</form>";
 		?>
         </div>
 	<div class="form-popup" id="removeTrainer">
@@ -357,7 +394,7 @@ function cancelNote(){
 		<?php
 		if (isset($_POST['removedTrainer'])){
 			$removeId=$_POST['removedTrainer'];
-			$removeqry="DELETE FROM trainertohorsedb where trainerId=".$remoteId." and horseName='.$selectedHorse.'";
+			$removeqry="DELETE FROM trainertohorsedb where trainerId=".$removeId ." and horseName='$selectedHorse'";
 			$delete=mysqli_query($con,$removeqry);
 		}
 		 
@@ -366,24 +403,37 @@ function cancelNote(){
 		echo "<form method='post' action='' class='form-container'>";
                 echo "<h1>Horse Trainers</h1>";
 		echo "<label for='removeTrainer'><b>". $selectedHorse ."'s Trainer(s)</b></label>";
-		echo "<br>";
-		echo "<br>";
-		if(mysqli_num_rows($trainersForHorse)>0){
+		echo "<select name='removedTrainer' id='removedTrainer'>";
+		echo "<option selected='true' disabled='disabled'>Select Trainer</option>";
 		while($trainersRem = mysqli_fetch_array($trainersForHorse)){
-			echo $trainersRem['firstName'].' '.$trainersRem['lastName'];
-			echo "<input type='hidden' name='removedTrainer' value='".$trainersRem['id']."'>";
-	           	echo "<button type='submit' class='btn'>Add</button>";
-			echo "<br>";
+			echo "<option value='". $trainersRem['id'] ."'>". $trainersRem['firstName'].' '.$trainersRem['lastName']."</option>";
 		}
-		}
-		else{
-			echo "No trainers currently training ".$selectedHorse.".";
-			
-		}
+		echo "</select>";
+                echo "<button type='submit' class='btn'>Remove</button>";
+                echo "<button type='button' class='btn cancel' onclick='cancelBehavior()'>Close</button>";
+		echo "</form>";
+		?>
 		 
-?>
 
-	</div>
+	<!--here is the rank-->
+                <div class="form-popup" id="addBehavior">
+        <?php 
+
+        echo "<form method='post' action='' class='form-container'>";
+        echo "<h1>Change Rank</h1>";
+        echo "<label for='rank'><b>Rank</b></label>";
+        echo "<select name='rank' id='rank'>";
+        $row=["green","yellow","red"];
+        for($x=0;$x<3;$x++){
+            echo "<option value=\"".$row[$x]."\">".$row[$x]."</option>";
+        }
+        echo "</select>";
+        echo "<button type='submit' class='btn'>Add</button>";
+
+        ?>
+        </form>
+</div>
+        <!--End of rank--></div>
         <?PHP } ?>
     </div>
 </html>
