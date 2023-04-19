@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS horseDB;
 DROP TABLE IF EXISTS personDB;
 DROP TABLE IF EXISTS trainerDB;
 DROP TABLE IF EXISTS behaviorDB;
+DROP TABLE IF EXISTS dietaryRestrictionsDB;
 
 
 SET foreign_key_checks = 0;
@@ -106,6 +107,12 @@ CREATE TABLE notesDB (
   FOREIGN KEY (trainerName) REFERENCES personDB(fullName)
 ); 
 
+CREATE TABLE dietaryRestrictionsDB (
+  horseName varchar(50) NOT NULL,
+  restriction text,
+  primary key (horseName, restriction),
+  FOREIGN KEY (horseName) REFERENCES horseDB(horseName)
+);
 
 
 
