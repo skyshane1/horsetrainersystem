@@ -137,6 +137,7 @@ function process_form($title, $behavior, $action) {
 
                     //Else, there are behaviors in the database,
 		    else {
+                echo '<p> Please use the search bar to search for a behavior. Type the title you want to look for, then hit <b>Search</b>.</p>';
 			echo "<form action='behaviorActions.php'>";
                         echo("<input type='hidden' name='formAction' value='searchBehavior'>");
 			//so retrieve and show all of the behaviors in a table.

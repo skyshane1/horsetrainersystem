@@ -6,7 +6,7 @@
 }
 
 .content {
-    max-width: 60%;
+    max-width: 65%;
     margin: auto;
     background: white;
     padding: 32px;
@@ -73,6 +73,7 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
 
 .flex-container {
     display: flex;
+    justify-content: center;
 }
 
 .flex-item {
