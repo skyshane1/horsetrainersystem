@@ -142,7 +142,6 @@ $con = connect();
                 if (isset($_POST['order'])) {
                     $qry = orderBy($_POST['order']);
                 }
-                echo($qry);
                 $fetched = mysqli_query($con, $qry);
                 $indx = 0;
                 echo "<form method='get'>";
