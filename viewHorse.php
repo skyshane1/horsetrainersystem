@@ -134,14 +134,15 @@ $con = connect();
                 <?php
                 include_once('database/dbinfo.php');
                 $con = connect();
-                if (isset($_GET['search'])) {
-                    $qry = searchBy($_GET['search']);
+                if (isset($_POST['search'])) {
+                    $qry = searchBy($_POST['search']);
                 } else {
                     $qry = 'select * from horsedb order by pastureNum ASC';
                 }
-                if (isset($_GET['order'])) {
-                    $qry = orderBy($_GET['order']);
+                if (isset($_POST['order'])) {
+                    $qry = orderBy($_POST['order']);
                 }
+                echo($qry);
                 $fetched = mysqli_query($con, $qry);
                 $indx = 0;
                 echo "<form method='get'>";
