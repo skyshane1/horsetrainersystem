@@ -154,6 +154,7 @@ $con = connect();
                     $trainerQry = 'SELECT fullName FROM `persondb` WHERE id = (select trainerId from trainertohorsedb where horseName = "' . $horseName . '" limit 1); ';
                     $trainerName = mysqli_query($con, $trainerQry);
                     $tName = mysqli_fetch_assoc($trainerName);
+                    $tempname = str_replace(" ", "_", $horseName);
                     if (($indx % 2) == 1) {
                         $rowClass = 'class="trodd"';
                     } else {
@@ -161,7 +162,7 @@ $con = connect();
                     }
                     echo '<tr ' . $rowClass . '>';
                     echo '<td><input type="submit" style="background-color: #313131;
-    color: #f8f8f8; margin: 0; border-radius: 0;" name="selectedHorse" value=' . $horseName . '></input&nbsp;</td>';
+    color: #f8f8f8; margin: 0; border-radius: 0;" name="selectedHorse" value=' .$tempname. '></input&nbsp;</td>';
                     echo '<td>' . $horseRank . '&nbsp;</td>';
                     echo '<td>' . $horseColor . '&nbsp;</td>';
                     echo '<td>' . $horseBreed . '&nbsp;</td>';
@@ -181,6 +182,7 @@ $con = connect();
             </table>
         </form>
     <?PHP } else if ($selectedHorse != null) {
+        $selectedHorse = str_replace("_", " ", $selectedHorse);
         echo '<p><strong>' . $selectedHorse . '\'s profile</strong></p>';
         echo '<p>This page contains all of ' . $selectedHorse . '\'s information</p>';
         echo '<p>The view notes tab contains all of ' . $selectedHorse . '\'s notes and can be filtered on content</p>';
@@ -223,6 +225,20 @@ $con = connect();
             addDietaryRestrictionToDB($selectedHorse, $dietaryRestriction);
             $_POST['dietary'] = NULL;
         }
+        if (isset($_POST['trainerToAdd'])) {
+            try {
+                $trainerToAdd = $_POST['trainerToAdd'];
+                $todqry = "INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('" . $trainerToAdd . "','" . $selectedHorse . "');";
+                mysqli_query($con, $todqry);
+            } catch (Exception $e) {
+                echo "<h2>WARNING: Can't add duplicate trainer</h2>";
+            }
+        }
+        if (isset($_POST['removedTrainer'])) {
+            $removeId = $_POST['removedTrainer'];
+            $removeqry = "DELETE FROM trainertohorsedb where trainerId=" . $removeId . " and horseName='$selectedHorse'";
+            $delete = mysqli_query($con, $removeqry);
+        }
         ?>
         <table class="horseinfo">
             <tr>
@@ -250,9 +266,9 @@ $con = connect();
                     <table>
                         <?PHP
                         if ($_GET['searchNote'] != null) {
-                            $curr_horse_qry = "Select * from notesdb where note like '%" . $_GET['searchNote'] . "%' order by noteDate DESC;";
+                            $curr_horse_qry = "Select * from notesdb where note like '%" . $_GET['searchNote'] . "%' and horseName = '".$selectedHorse."' order by noteDate DESC;";
                         } else {
-                            $curr_horse_qry = "Select * from notesdb where horseName = '" . $selectedHorse . "' order by noteDate DESC;";
+                            $curr_horse_qry = "Select * from notesdb where horseName = '" . $selectedHorse . "' and horseName = '".$selectedHorse."' order by noteDate DESC;";
                         }
                         $curr_fetched = mysqli_query($con, $curr_horse_qry);
                         while ($row = mysqli_fetch_array($curr_fetched, MYSQLI_ASSOC)) {
@@ -407,20 +423,6 @@ $con = connect();
         ?>
         <div class="form-popup" id="addTrainer">
             <?php
-            if (isset($_POST['trainerToAdd'])) {
-                try {
-                    $trainerToAdd = $_POST['trainerToAdd'];
-                    $todqry = "INSERT INTO trainertohorsedb (trainerId, horseName) VALUES ('" . $trainerToAdd . "','" . $selectedHorse . "');";
-                    mysqli_query($con, $todqry);
-                } catch (Exception $e) {
-                    echo "<h2>WARNING: Can't add duplicate trainer</h2>";
-                }
-
-
-            }
-            ?>
-
-            <?php
             $qry = "SELECT firstName, lastName, id from persondb order by lastName";
             $allTrainers = mysqli_query($con, $qry);
             echo "<form method='post' action='' class='form-container'>";
@@ -439,12 +441,6 @@ $con = connect();
         <div class="form-popup" id="removeTrainer">
 
             <?php
-            if (isset($_POST['removedTrainer'])) {
-                $removeId = $_POST['removedTrainer'];
-                $removeqry = "DELETE FROM trainertohorsedb where trainerId=" . $removeId . " and horseName='$selectedHorse'";
-                $delete = mysqli_query($con, $removeqry);
-            }
-
             $qry = "SELECT firstName, lastName, id from persondb join trainertohorsedb on trainerId=id and horseName='" . $selectedHorse . "' order by lastName";
             $trainersForHorse = mysqli_query($con, $qry);
             echo "<form method='post' action='' class='form-container'>";
